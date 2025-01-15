@@ -1,1 +1,3 @@
-export default interface ClientToServerEvents {}
+export default interface ClientToServerEvents {
+  "auth:login": (token?: string) => void;
+}
