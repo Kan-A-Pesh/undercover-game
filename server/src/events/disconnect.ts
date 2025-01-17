@@ -1,4 +1,4 @@
-import Player from "../player";
+import Player from "../game/player";
 import { SocketType } from "@/types/socket";
 
 export default function disconnect(socket: SocketType) {

@@ -1,4 +1,4 @@
-import { io } from "./server";
+import { io } from "../server";
 
 const rooms = new Map<string, Room>();
 
