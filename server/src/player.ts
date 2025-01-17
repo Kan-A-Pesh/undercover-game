@@ -49,11 +49,6 @@ export default class Player {
 
   public logoutSocket(socketId: string) {
     this.relatedSockets.delete(socketId);
-
-    if (this.relatedSockets.size === 0) {
-      if (this.roomId) this.leaveRoom();
-      players.delete(this.id);
-    }
   }
 
   public joinRoom(roomId: string) {
