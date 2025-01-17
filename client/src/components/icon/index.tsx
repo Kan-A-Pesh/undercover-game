@@ -15,11 +15,7 @@ const icons = {
   plus: Plus,
 } as const;
 
-export default function Icon({
-  name,
-  size = 24,
-  color = "primary",
-}: IconProps) {
+export default function Icon({ name, size = 24, color = "primary" }: IconProps) {
   const IconComponent = icons[name];
   return <IconComponent size={size} color={color} />;
 }

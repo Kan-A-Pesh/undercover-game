@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Color } from "~/types/color";
+import type { Color } from "@/types/color";
 import type { IconName } from "../icon";
 
 interface ButtonProps {
@@ -12,6 +12,7 @@ interface ButtonProps {
   icon?: IconName;
 }
 
-export default function Button() {
+export default function Button({ className }: ButtonProps) {
+  return <button className={className} />;
   // TODO: implement
 }
