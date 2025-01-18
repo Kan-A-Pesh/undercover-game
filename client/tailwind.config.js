@@ -22,6 +22,12 @@ export default {
       pattern: /(left|right|gap|px|py|w|h|ps|pe)-(1|2|4|6|8|10)/,
       variants: ["hover", "group-hover"],
     },
-    "flex", "items-center", "border", "opacity-50", "group", "pointer-events-none", "relative"
-  ]
+    "flex",
+    "items-center",
+    "border",
+    "opacity-50",
+    "group",
+    "pointer-events-none",
+    "relative",
+  ],
 };
