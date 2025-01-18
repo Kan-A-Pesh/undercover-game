@@ -16,10 +16,12 @@ export default class Room {
   }
 
   public join(id: string) {
+    console.log("Joining room", id);
     return false;
   }
 
   public leave(id: string) {
+    console.log("Leaving room", id);
     return false;
   }
 
