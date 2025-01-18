@@ -33,7 +33,7 @@ const icons = {
   zzz: Zzz,
 } as const;
 
-export default function Icon({ name, size = 24, color = "white" }: IconProps) {
+export default function Icon({ name, size = 24, color = "current" }: IconProps) {
   const IconComponent = icons[name];
   return (
     <svg
