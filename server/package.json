@@ -10,15 +10,22 @@
     "@types/jsonwebtoken": "^9.0.7",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
-  },
-  "scripts": {
-    "start": "node build/index.js",
-    "build": "tsc",
-    "dev": "nodemon src/index.ts"
+    "typescript": "^5.7.3",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "typescript-eslint": "^8.20.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.9",
     "utf-8-validate": "^6.0.5"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "dev": "nodemon src/index.ts",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "format": "prettier --write ."
   }
 }
