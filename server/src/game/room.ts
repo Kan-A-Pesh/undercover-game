@@ -7,7 +7,7 @@ export default class Room {
   players: string[] = [];
 
   constructor() {
-    this.id = crypto.randomUUID();
+    this.id = crypto.randomUUID(); 
     rooms.set(this.id, this);
   }
 
