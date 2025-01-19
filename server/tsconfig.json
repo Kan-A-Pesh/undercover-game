@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "rootDir": ".",
     "baseUrl": ".",
     "outDir": "./build",
     "esModuleInterop": true,
@@ -10,7 +9,8 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "shared/*": ["../shared/*"]
     }
   }
 }
