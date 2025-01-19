@@ -1,9 +1,9 @@
-import Player from "../game/player";
-import { SocketType } from "@/types/socket";
+import Player from "@/game/player";
+import { SocketType } from "#/socket";
 import jwt from "jsonwebtoken";
 
-export default function authLogin(socket: SocketType) {
-  socket.on("auth:login", (token?: string) => {
+export default function join(socket: SocketType) {
+  socket.on("room:join", (token?: string) => {
     if (!token) return;
 
     try {
@@ -13,7 +13,8 @@ export default function authLogin(socket: SocketType) {
 
       Player.get(userId)?.loginSocket(socket.id);
     } catch (error) {
-      console.log(error);
+      //TODO: handle error
+      console.error(error);
     }
   });
 }

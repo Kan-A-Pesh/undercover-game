@@ -20,11 +20,6 @@ export default class Player {
     return this.id;
   }
 
-  public getRoom() {
-    if (!this.roomId) return undefined;
-    return Room.get(this.roomId);
-  }
-
   public getUsername() {
     return this.username;
   }
@@ -49,6 +44,21 @@ export default class Player {
 
   public logoutSocket(socketId: string) {
     this.relatedSockets.delete(socketId);
+  }
+
+  public getRoom() {
+    if (!this.roomId) return undefined;
+    return Room.get(this.roomId);
+  }
+
+  //! Michel don't fuse createRoom and joinRoom
+  public createRoom() {
+    if (this.roomId) throw new Error("Player is already in a room");
+
+    const room = new Room();
+    room.join(this.id);
+
+    this.roomId = room.getId();
   }
 
   public joinRoom(roomId: string) {
