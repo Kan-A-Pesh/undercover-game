@@ -1,4 +1,5 @@
 import Button from "@/components/ui/button";
+import Text from "@/components/ui/text";
 import { useAppDispatch } from "@/store/hooks";
 import { setRoute } from "@/store/slices/router";
 
@@ -9,7 +10,7 @@ export default function HomeScreen() {
 
   return (
     <div>
-      <h1>Home</h1>
+      <Text type="display">Welcome to the game</Text>
       <Button type="filled" color="primary" size="md" icon="scroll" onClick={handleRules}>
         Read the rules
       </Button>

@@ -3,6 +3,16 @@ export default {
   content: [],
   theme: {
     extend: {},
+    fontFamily: {
+      title: ["'Micro 5'", "ui-monospace", "monospace"],
+      body: ["'Departure Mono'", "ui-monospace", "monospace"],
+    },
+    fontSize: {
+      display: ["96px", "48px"],
+      title: ["32px", "24px"],
+      body: ["12px", "16px"],
+      caption: ["10px", "10px"],
+    },
     colors: {
       primary: "#9747FF",
       secondary: "#C396FF",
@@ -15,7 +25,7 @@ export default {
   plugins: [],
   safelist: [
     {
-      pattern: /(text|bg|border)-(.*)/,
+      pattern: /(font|text|bg|border)-(.*)/,
       variants: ["hover"],
     },
     {
