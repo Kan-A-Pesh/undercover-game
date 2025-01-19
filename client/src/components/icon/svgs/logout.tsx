@@ -1,8 +1,8 @@
 export default function Logout() {
   return (
     <>
-      <path d="M12 4V0H20V20H12V16H16V4H12Z" fill="currentColor" />
-      <path d="M12 8V12H6V16H4V14H2V12H0V8H2V6H4V4H6V8H12Z" fill="currentColor" />
+      <path d="M2 10V14H8V18H10V16H12V14H14V10H12V8H10V6H8V10H2Z" fill="currentColor" />
+      <path d="M14 6V2H22V22H14V18H18V6H14Z" fill="currentColor" />
     </>
   );
 }

@@ -3,6 +3,7 @@ import type { Color } from "@/types/color";
 import type { IconName } from "../icon";
 import Icon from "../icon";
 import clsx from "clsx";
+import Text from "./text";
 
 type Size = "sm" | "md";
 type Type = "filled" | "outlined";
@@ -66,7 +67,7 @@ export default function Button({
     >
       <span className="flex items-center gap-2 relative group-hover:left-1">
         {icon && <Icon name={icon} color="current" size={24} />}
-        {children}
+        {typeof children === "string" ? <Text color="current">{children}</Text> : children}
       </span>
     </button>
   );
