@@ -9,6 +9,10 @@ import Message from "./svgs/message";
 import Refresh from "./svgs/refresh";
 import Scroll from "./svgs/scroll";
 import Zzz from "./svgs/zzz";
+import Sound from "./svgs/sound";
+import Stars from "./svgs/stars";
+import Target from "./svgs/target";
+import Word from "./svgs/word";
 
 interface IconProps {
   name: IconName;
@@ -30,6 +34,10 @@ const icons = {
   plus: Plus,
   refresh: Refresh,
   scroll: Scroll,
+  sound: Sound,
+  stars: Stars,
+  target: Target,
+  word: Word,
   zzz: Zzz,
 } as const;
 
