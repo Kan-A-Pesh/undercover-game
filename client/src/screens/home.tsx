@@ -1,9 +1,8 @@
+import Hat from "@/assets/svgs/hat";
 import Button from "@/components/ui/button";
 import Text from "@/components/ui/text";
 import { useAppDispatch } from "@/store/hooks";
 import { setRoute } from "@/store/slices/router";
-
-import hat from "@/assets/hat.svg";
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
@@ -14,9 +13,9 @@ export default function HomeScreen() {
   const handleCreateRoom = () => console.log("create room");
 
   return (
-    <>
+    <section className="flex flex-1 flex-col py-4 md:py-8 lg:py-16 px-4">
       <div className="flex flex-col items-center justify-center gap-1">
-        <img src={hat} alt="hat" className="h-24" />
+        <Hat className="h-24 text-white" />
         <Text type="display">UNDER</Text>
         <Text type="display">COVER</Text>
       </div>
@@ -33,7 +32,7 @@ export default function HomeScreen() {
           </Button>
         </section>
 
-        <section className="flex-1 flex flex-col items-center justify-center gap-2">
+        <section className="flex-1 flex flex-col justify-center gap-2">
           <Text type="title">What is Undercover?</Text>
           <Text type="paragraph">
             Undercover is a game where you play as a undercover agent. You will be given a list of people to choose from
@@ -44,6 +43,6 @@ export default function HomeScreen() {
           </Text>
         </section>
       </main>
-    </>
+    </section>
   );
 }
