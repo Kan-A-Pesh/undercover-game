@@ -17,4 +17,4 @@ io.on("connection", async (socket) => {
   for (const module of modules) module.default(socket);
 });
 
-io.listen(3001);
+io.listen(3002);

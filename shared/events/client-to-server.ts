@@ -1,4 +1,4 @@
 export default interface ClientToServerEvents {
   "room:join": (token?: string) => void;
-  "room:create": () => string;
+  "room:create": (blabla:string, callback: (token: string) => void ) => void;
 }
