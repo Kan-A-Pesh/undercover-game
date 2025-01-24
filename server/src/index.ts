@@ -1,3 +1,5 @@
+import 'dotenv/config'
+import 'tsconfig-paths/register';
 import { SocketType } from "#/socket";
 import { io } from "./server";
 import { glob } from "glob";
