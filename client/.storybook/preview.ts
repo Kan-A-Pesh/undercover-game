@@ -4,6 +4,10 @@ import "../src/assets/fonts/index.css";
 
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      values: [{ name: "dark", value: "#000000" }],
+      default: "dark",
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: ["index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
     fontFamily: {
@@ -10,7 +10,7 @@ export default {
     fontSize: {
       display: ["96px", "48px"],
       title: ["32px", "24px"],
-      body: ["12px", "16px"],
+      paragraph: ["12px", "16px"],
       caption: ["10px", "10px"],
     },
     colors: {
@@ -28,16 +28,5 @@ export default {
       pattern: /(font|text|bg|border)-(.*)/,
       variants: ["hover"],
     },
-    {
-      pattern: /(left|right|gap|px|py|w|h|ps|pe)-(1|2|4|6|8|10)/,
-      variants: ["hover", "group-hover"],
-    },
-    "flex",
-    "items-center",
-    "border",
-    "opacity-50",
-    "group",
-    "pointer-events-none",
-    "relative",
   ],
 };
