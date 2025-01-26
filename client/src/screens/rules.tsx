@@ -15,7 +15,7 @@ export default function RulesScreen() {
         <Text type="display" className="mb-2">
           Rules
         </Text>
-        <Button type="outlined" color="primary" size="md" icon="logout" onClick={handleHome}>
+        <Button type="outlined" color="primary" size="md" icon="logout" className="w-fit" onClick={handleHome}>
           Go back
         </Button>
 
