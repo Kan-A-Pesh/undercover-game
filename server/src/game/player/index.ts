@@ -1,30 +1,32 @@
-import Room from "./room";
+import Room from "../room";
 
 const players = new Map<string, Player>();
 
 export default class Player {
   private id: string;
 
-  private username?: string;
-  private avatar?: string;
+  private username: string;
+  private avatar: string;
 
   private roomId?: string;
   private relatedSockets: Set<string> = new Set();
 
-  constructor() {
+  constructor(username: string, avatar: string) {
     this.id = crypto.randomUUID();
     players.set(this.id, this);
+    this.username = username;
+    this.avatar = avatar;
   }
 
-  public getId() {
+  public getId(): string {
     return this.id;
   }
 
-  public getUsername() {
+  public getUsername(): string {
     return this.username;
   }
 
-  public getAvatar() {
+  public getAvatar(): string {
     return this.avatar;
   }
 
@@ -46,7 +48,7 @@ export default class Player {
     this.relatedSockets.delete(socketId);
   }
 
-  public getRoom() {
+  public getRoom(): Room | undefined {
     if (!this.roomId) return undefined;
     return Room.get(this.roomId);
   }
@@ -79,7 +81,7 @@ export default class Player {
     this.roomId = undefined;
   }
 
-  public static get(id: string) {
+  public static get(id: string): Player | undefined {
     return players.get(id);
   }
 }
