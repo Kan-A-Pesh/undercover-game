@@ -4,7 +4,7 @@ import Button from "./button";
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (value: false) => void;
   title: string;
   children?: ReactNode;
   footer?: ReactNode;
@@ -15,7 +15,7 @@ export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/80" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/80" onClick={() => onClose(false)} />
       <div className="relative z-10 bg-black border border-white min-w-[300px] max-w-md  p-6">
         <Text type="title" className="mb-3 break-words">
           {title}
@@ -25,7 +25,7 @@ export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) 
 
         {footer ?? (
           <div className="flex justify-end">
-            <Button type="outlined" color="white" onClick={onClose}>
+            <Button type="outlined" color="white" onClick={() => onClose(false)}>
               Ok
             </Button>
           </div>

@@ -38,10 +38,13 @@ export function JoinRoomModal({ isOpen, onClose, onJoin }: JoinRoomModalProps) {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => onClose(false)}
+      onClose={onClose}
       title="Join a room"
       footer={
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          <Button type="outlined" color="white" onClick={() => onClose(false)}>
+            Cancel
+          </Button>
           <Button icon="login" type="filled" color="primary" onClick={handleJoin}>
             Join
           </Button>
