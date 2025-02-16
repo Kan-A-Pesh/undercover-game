@@ -1,9 +1,9 @@
-import { BaseState, SetupState } from "./roomState";
-import { Settings } from "shared/models/settings";
+import { BaseState, SetupState } from "./room-state";
+import RoomSettings from "shared/models/room-settings";
 
 export default class RoomContext {
   private state: BaseState;
-  private settings: Settings;
+  private settings: RoomSettings;
 
   constructor() {
     this.state = new SetupState();
@@ -23,6 +23,10 @@ export default class RoomContext {
     return this.state;
   }
 
+  public getMaxPlayer(): number {
+    return this.settings.maxPlayer;
+  }
+
   public getPlayers(): Set<string> {
     return this.settings.players;
   }
@@ -35,7 +39,7 @@ export default class RoomContext {
     this.settings.players.delete(player);
   }
 
-  public getRoomInfo(): Settings {
+  public getRoomInfo(): RoomSettings {
     return this.settings;
   }
 
