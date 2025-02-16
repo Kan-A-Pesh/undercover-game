@@ -41,6 +41,7 @@ export default class Player {
   }
 
   public loginSocket(socketId: string) {
+    if (this.relatedSockets.has(socketId)) return;
     this.relatedSockets.add(socketId);
   }
 
@@ -66,6 +67,7 @@ export default class Player {
   public joinRoom(roomId: string) {
     const room = Room.get(roomId);
     if (!room) throw new Error("Room not found");
+    if (this.roomId === roomId) return;
     if (!room.join(this.id)) throw new Error("Room is full");
 
     this.roomId = roomId;

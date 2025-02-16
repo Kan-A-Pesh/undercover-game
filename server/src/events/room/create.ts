@@ -1,23 +1,35 @@
 import Player from "@/game/player";
 import { SocketType } from "#/socket";
-import jwt from "jsonwebtoken";
+import PlayerData from "shared/models/player-data";
+import {ClientToServerEventTypes as EventTypes} from "shared/events/types/client-to-server";
 
 export default function create(socket: SocketType) {
-  //arg(might use later hehe) needed to send info to client using callback
-  socket.on("room:create", (arg, callback) => {
-    const player = new Player("username", "avatar");
-    let token: string;
+  socket.on(EventTypes.ROOM_CREATE, (payload, callback) => {
+    const { username, avatar } = payload;
+
     try {
-      token = jwt.sign({ userId: player.getId() }, process.env.JWT_SECRET!);
+      const player = new Player(username, avatar);
       player.createRoom();
-      const room = player.getRoom()!;
+
+      const room = player.getRoom();
+      if (!room) throw new Error("Room not found");
+
       socket.join(room.getId());
 
+      const playerData: PlayerData = {
+        username: player.getUsername(),
+        avatar: player.getAvatar(),
+      };
+
       //TODO: send player and room contexts to the client
-      // Send the token back to the client
-      callback(token);
+      callback(playerData);
     } catch (error) {
-      //TODO: handle error
+      if (error instanceof Error) {
+        callback(error.message);
+      } else {
+        callback("An unknown error occurred");
+      }
+
       console.error(error);
     }
   });

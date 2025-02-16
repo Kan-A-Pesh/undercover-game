@@ -1,4 +1,4 @@
-export type Settings = {
+type RoomSettings = {
     players: Set<string>;
     maxPlayer: number;
     mrWhiteCount: number;
@@ -8,3 +8,5 @@ export type Settings = {
     debateDuration: number;
     votingDuration: number;
 };
+
+export default RoomSettings;

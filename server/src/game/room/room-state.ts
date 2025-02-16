@@ -1,5 +1,7 @@
-import RoomContext from "./roomContext";
-type RoomName = "Setup" | "WordDistribution" | "Vote";
+import RoomContext from "./room-context";
+enum RoomName {
+  Setup = "Setup"
+}
 
 export abstract class BaseState {
   protected name: RoomName;
@@ -15,5 +17,5 @@ export abstract class BaseState {
 
 export class SetupState extends BaseState {
   constructor() {
-    super("Setup");
+    super(RoomName.Setup);
 }};
