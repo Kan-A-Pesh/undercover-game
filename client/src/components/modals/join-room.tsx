@@ -1,29 +1,48 @@
+import { KeyboardEvent, useCallback, useState } from "react";
 import Button from "../ui/button";
 import { Modal } from "../ui/modal";
 import Text from "../ui/text";
 
+const JOIN_CODE_PATTERN = "[A-Za-z0-9]{3}-[A-Za-z0-9]{3}";
+
 interface JoinRoomModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (value: false) => void;
   onJoin: (code: string) => void;
 }
 
 export function JoinRoomModal({ isOpen, onClose, onJoin }: JoinRoomModalProps) {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const code = formData.get("code") as string;
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+
+  const handleJoin = useCallback(() => {
+    if (!code.match(JOIN_CODE_PATTERN)) {
+      setError(`Invalid code format`);
+      return;
+    }
+
     onJoin(code);
-  };
+  }, [onJoin, code]);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      setError("");
+      if (e.key !== "Enter") return;
+
+      e.preventDefault();
+      handleJoin();
+    },
+    [handleJoin],
+  );
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => onClose(false)}
       title="Join a room"
       footer={
         <div className="flex justify-end">
-          <Button icon="login" type="filled" color="primary">
+          <Button icon="login" type="filled" color="primary" onClick={handleJoin}>
             Join
           </Button>
         </div>
@@ -34,15 +53,23 @@ export function JoinRoomModal({ isOpen, onClose, onJoin }: JoinRoomModalProps) {
           Enter your room code
         </Text>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleJoin} className="w-64">
           <input
             type="text"
             name="code"
             placeholder="XXX-XXX"
-            pattern="[A-Za-z0-9]{3}-[A-Za-z0-9]{3}"
+            pattern={JOIN_CODE_PATTERN}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="w-full bg-transparent border border-white px-4 py-2 text-white font-body placeholder:text-white/50 focus:outline-none"
             required
           />
+          {error && (
+            <Text type="caption" color="primary" className="mt-1">
+              {error}
+            </Text>
+          )}
         </form>
       </div>
     </Modal>
