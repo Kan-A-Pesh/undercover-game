@@ -13,11 +13,13 @@ import Sound from "./svgs/sound";
 import Stars from "./svgs/stars";
 import Target from "./svgs/target";
 import Word from "./svgs/word";
+import clsx from "clsx";
 
-interface IconProps {
+export interface IconProps {
   name: IconName;
   size?: number;
   color?: Color;
+  className?: string;
 }
 
 export type IconName = keyof typeof icons;
@@ -41,7 +43,7 @@ const icons = {
   zzz: Zzz,
 } as const;
 
-export default function Icon({ name, size = 24, color = "current" }: IconProps) {
+export default function Icon({ name, size = 24, color = "current", className }: IconProps) {
   const IconComponent = icons[name];
   return (
     <svg
@@ -50,7 +52,7 @@ export default function Icon({ name, size = 24, color = "current" }: IconProps) 
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`text-${color}`}
+      className={clsx(`text-${color}`, className)}
     >
       <IconComponent />
     </svg>

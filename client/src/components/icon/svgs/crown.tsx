@@ -1,3 +1,3 @@
 export default function Crown() {
-  return <path d="M0 0V12H20V0H18V2H16V6H14V4H12V2H8V4H6V6H4V2H2V0H0Z" fill="currentColor" />;
+  return <path d="M2 6V18H22V6H20V8H18V12H16V10H14V8H10V10H8V12H6V8H4V6H2Z" fill="currentColor" />;
 }
