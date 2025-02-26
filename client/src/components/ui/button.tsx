@@ -14,9 +14,18 @@ interface ButtonProps {
   color?: Color;
   size?: Size;
   type?: Type;
-  children: ReactNode;
+  children?: ReactNode;
   icon?: IconName;
   onClick?: () => void;
+}
+
+function getIconFromSize(size: Size) {
+  switch (size) {
+    case "sm":
+      return 16;
+    case "md":
+      return 24;
+  }
 }
 
 function getPaddingFromSize(size: Size) {
@@ -66,8 +75,8 @@ export default function Button({
       onClick={onClick}
     >
       <span className="flex items-center gap-2 relative group-hover:left-1">
-        {icon && <Icon name={icon} color="current" size={24} />}
-        {typeof children === "string" ? <Text color="current">{children}</Text> : children}
+        {icon && <Icon name={icon} color="current" size={getIconFromSize(size)} />}
+        {children && typeof children === "string" ? <Text color="current">{children}</Text> : children}
       </span>
     </button>
   );
