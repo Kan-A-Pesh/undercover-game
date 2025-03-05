@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Button from "@/components/ui/button";
 import Text from "@/components/ui/text";
 import Icon from "@/components/icon";
@@ -7,6 +7,7 @@ interface Member {
   id: string;
   username: string;
   isHost?: boolean;
+  isYou?: boolean;
 }
 
 export default function LobbyScreen() {
@@ -16,14 +17,16 @@ export default function LobbyScreen() {
   const [voteDuration, setVoteDuration] = useState(30);
   const [members] = useState<Member[]>([
     { id: "1", username: "roasted-recognition", isHost: true },
-    { id: "2", username: "versed-futility" },
+    { id: "2", username: "versed-futility", isYou: true },
     { id: "3", username: "raspy-threshold" },
   ]);
+
+  const hasHostPermission = useMemo(() => members.some((member) => member.isHost && member.isYou), [members]);
 
   return (
     <div className="min-h-screen bg-black p-6 flex flex-col gap-8">
       <div className="flex items-center gap-2">
-        <div className="w-24 h-24 bg-primary flex-shrink-0"></div>
+        <div className="w-20 h-20 border border-white flex-shrink-0"></div>
         <div className="flex-1">
           <Text type="paragraph" className="mb-1">
             Your username
@@ -76,12 +79,21 @@ export default function LobbyScreen() {
         <div className="space-y-2">
           {members.map((member) => (
             <div key={member.id} className="flex items-center gap-2 bg-black border border-white/20 p-2">
-              <div className="w-8 h-8 bg-primary flex-shrink-0"></div>
-              <Text className="flex-1">{member.username}</Text>
-              {member.isHost && <Icon name="crown" color="primary" />}
-              <button>
-                <Icon name="cross" color="white" />
-              </button>
+              <div className="w-8 h-8 border border-white flex-shrink-0"></div>
+
+              <Text>{member.username}</Text>
+
+              {member.isHost && <Icon name="crown" color="white" size={16} />}
+
+              {member.isYou && (
+                <div className="inline-flex bg-primary px-1 py-0.5">
+                  <Text type="caption" color="white">
+                    YOU
+                  </Text>
+                </div>
+              )}
+
+              {hasHostPermission && <Button className="ms-auto" size="sm" type="outlined" icon="cross" />}
             </div>
           ))}
         </div>
