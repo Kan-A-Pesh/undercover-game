@@ -16,6 +16,14 @@ export default class Room {
     return this.id;
   }
 
+  public getCurrentRoomState() {
+    return this.context.getState();
+  }
+
+  public getCurrentRoomInfo() {
+    return this.context.getRoomInfo();
+  }
+
   public join(playerId: string): boolean {
     const players = this.context.getPlayers();
     if (players.size > this.context.getMaxPlayer()) return false;
@@ -24,9 +32,9 @@ export default class Room {
     return true;
   }
 
-  public leave(playerId: string) {
-    const players = this.context.getPlayers();
-    if (!players.has(playerId)) return false;
+  public leave(playerId: string): boolean {
+    const isPlayer = this.context.getPlayers();
+    if (!isPlayer.has(playerId)) return false;
     this.context.removePlayer(playerId);
     console.log("Leaving room", playerId);
     return true;

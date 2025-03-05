@@ -4,11 +4,15 @@ import RoomSettings from "shared/models/room-settings";
 export default class RoomContext {
   private state: BaseState;
   private settings: RoomSettings;
+  private hostId: string | null = null;
+  private players: Set<string>; // All playerIds
+  private spectators: Set<string>;
 
   constructor() {
     this.state = new SetupState();
+    this.players = new Set<string>();
+    this.spectators = new Set<string>();
     this.settings = {
-      players: new Set<string>(),
       maxPlayer: 10,
       mrWhiteCount: 1,
       agentCount: 2,
@@ -28,23 +32,33 @@ export default class RoomContext {
   }
 
   public getPlayers(): Set<string> {
-    return this.settings.players;
+    return this.players;
   }
 
   public addPlayer(player: string) {
-    this.settings.players.add(player);
+    this.players.add(player);
   }
 
   public removePlayer(player: string) {
-    this.settings.players.delete(player);
+    this.players.delete(player);
   }
 
   public getRoomInfo(): RoomSettings {
     return this.settings;
   }
 
+  public setSettings(playerId: string, settings: RoomSettings) {
+    if (!this.isHost(playerId)) return;
+    this.settings = settings;
+  }
+
   public transitionTo(state: BaseState) {
     this.state = state;
     state.setContext(this);
   }
+
+  public isHost(playerId: string): boolean {
+    return this.hostId === playerId;
+  }
+
 }
