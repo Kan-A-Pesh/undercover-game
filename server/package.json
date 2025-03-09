@@ -3,16 +3,17 @@
   "dependencies": {
     "glob": "^11.0.1",
     "jsonwebtoken": "^9.0.2",
+    "node-nlp": "^5.0.0-alpha.5",
     "socket.io": "^4.8.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.7",
+    "eslint": "^9.18.0",
     "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
-    "eslint": "^9.18.0",
-    "prettier": "^3.4.2",
     "typescript-eslint": "^8.20.0"
   },
   "optionalDependencies": {
@@ -26,6 +27,7 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:words": "ts-node src/tests/generate-words.ts"
   }
 }

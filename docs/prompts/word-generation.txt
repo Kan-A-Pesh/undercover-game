@@ -1,0 +1,15 @@
+can you generate a list of words that is semantically near from each other, for example
+
+kitten # because it's semantically near of cat
+cat # because it's semantically near of kitten and dog
+dog # because it's semantically near of cat and bone
+bone # because it's semantically near of dog ...
+...
+
+do not include any comments, just create a list of words with one word on each line
+create more with multiple subjects/topics (for example: switch from animals to art to any others topics)
+
+you need to continue the follwing list
+```
+[INCLUDE THE LIST HERE]
+```
