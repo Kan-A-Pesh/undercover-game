@@ -10,7 +10,7 @@ export default function RulesScreen() {
   const handleHome = () => dispatch(setRoute("home"));
 
   return (
-    <div className="flex flex-1 flex-col gap-16 px-4 items-start py-4 md:py-8 lg:py-16">
+    <div className="flex flex-1 flex-col gap-16 items-start px-4 md:px-12 lg:px-24 py-12 md:py-16 lg:py-32">
       <div className="flex flex-col gap-4 max-w-md mx-auto w-full">
         <Text type="display" className="mb-2">
           Rules
