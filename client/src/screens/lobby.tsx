@@ -78,10 +78,10 @@ export default function LobbyScreen() {
       {/* Bottom Actions */}
       <div className="mt-auto flex gap-2">
         <Button icon="logout" type="outlined" color="white" />
-        <Button icon="message" type="outlined" color="white" />
         <Button color="primary" className="flex-1">
           Start game
         </Button>
+        <Button icon="message" color="white" />
       </div>
     </div>
   );
