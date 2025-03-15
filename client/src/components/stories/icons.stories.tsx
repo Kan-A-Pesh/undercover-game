@@ -13,5 +13,6 @@ export const IconExample: Story = {
     name: "plus",
     size: 32,
     color: "white",
+    className: "border border-white",
   },
 };
