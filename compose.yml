@@ -1,3 +1,5 @@
+name: undercover
+
 services:
   client:
     build:
@@ -8,3 +10,9 @@ services:
   server:
     build:
       context: ./server
+
+  word-gen:
+    build:
+      context: ./services
+    environment:
+      - FLASK_ENV=production
