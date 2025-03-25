@@ -1,0 +1,17 @@
+# Python virtual environment
+venv/
+env/
+.venv/
+.env/
+ENV/
+
+# word2vec models
+
+*.bin
+
+# PyCharm
+.idea/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
