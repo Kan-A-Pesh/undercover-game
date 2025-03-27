@@ -26,7 +26,7 @@ export default function create(socket: SocketType) {
         success({
           signedPlayerId,
           playerData: player.getPlayerData(),
-          gameSettings: player.getRoom()!.getCurrentRoomInfo()
+          gameSettings: player.getRoom()!.getCurrentRoomInfo(),
         }),
       );
     } catch (error) {
