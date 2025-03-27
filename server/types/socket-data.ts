@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type SocketData = {};
+type SocketData = {
+  playerId?: string;
+};
 
 export default SocketData;

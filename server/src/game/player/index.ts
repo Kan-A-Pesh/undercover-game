@@ -1,5 +1,6 @@
 import PlayerData from "shared/models/player-data";
 import Room from "../room";
+import { io } from "@/server";
 
 const players = new Map<string, Player>();
 
@@ -8,7 +9,7 @@ export default class Player {
   private playerData: PlayerData;
 
   private roomId?: string;
-  private relatedSockets: Set<string> = new Set();
+  private relatedSocketId?: string;
 
   constructor(username: string, avatar: string) {
     this.id = crypto.randomUUID();
@@ -35,12 +36,16 @@ export default class Player {
   }
 
   public loginSocket(socketId: string) {
-    if (this.relatedSockets.has(socketId)) return;
-    this.relatedSockets.add(socketId);
+    if (this.relatedSocketId) {
+      // Logout the player from the old socket
+      io.sockets.sockets.get(this.relatedSocketId)?.leave(this.roomId ?? "");
+    }
+
+    this.relatedSocketId = socketId;
   }
 
-  public logoutSocket(socketId: string) {
-    this.relatedSockets.delete(socketId);
+  public logoutSocket() {
+    this.relatedSocketId = undefined;
   }
 
   public getRoom(): Room | undefined {
@@ -48,23 +53,23 @@ export default class Player {
     return Room.get(this.roomId);
   }
 
-  //! Michel don't fuse createRoom and joinRoom
-  public createRoom() {
+  public createOrJoinRoom(roomId?: string) {
     if (this.roomId) throw new Error("Player is already in a room");
 
-    const room = new Room();
-    room.join(this.id);
+    let room: Room | undefined;
+
+    if (roomId) {
+      // Join existing room
+      room = Room.get(roomId);
+      if (!room) throw new Error("Room not found");
+      if (!room.join(this.id)) throw new Error("Room is full and no spectator allowed");
+    } else {
+      // Create new room
+      room = new Room();
+      room.join(this.id);
+    }
 
     this.roomId = room.getId();
-  }
-
-  public joinRoom(roomId: string) {
-    const room = Room.get(roomId);
-    if (!room) throw new Error("Room not found");
-    if (this.roomId === roomId) return;
-    if (!room.join(this.id)) throw new Error("Room is full and no spectator allowed");
-
-    this.roomId = roomId;
   }
 
   public leaveRoom() {
