@@ -17,4 +17,4 @@ io.on("connection", async (socket) => {
   for (const module of modules) module.default(socket);
 });
 
-io.listen(3002);
+io.listen(parseInt(process.env.SOCKET_PORT || "3001"));

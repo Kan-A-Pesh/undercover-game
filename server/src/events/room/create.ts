@@ -8,6 +8,7 @@ import { success, failure } from "shared/response/constructors";
 export default function create(socket: SocketType) {
   socket.on(EventTypes.ROOM_CREATE, (payload, callback) => {
     const { username, avatar } = payload;
+    if (!username || !avatar) throw new Error("Username or avatar is missing");
 
     try {
       //TODO: fix socket can create multiple rooms
@@ -21,11 +22,11 @@ export default function create(socket: SocketType) {
 
       const signedPlayerId = jwt.sign({ id: player.getId() }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
-      //TODO: send room context to the client
       callback(
         success({
           signedPlayerId,
           playerData: player.getPlayerData(),
+          gameSettings: player.getRoom()!.getCurrentRoomInfo()
         }),
       );
     } catch (error) {

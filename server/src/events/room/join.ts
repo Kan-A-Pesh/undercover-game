@@ -13,6 +13,8 @@ export default function join(socket: SocketType) {
     let player: Player | undefined;
     let sendPlayerId: string;
 
+    if (!username || !avatar) throw new Error("Username or avatar is missing");
+
     try {
       // if player joins for the first time
       if (!token) {
@@ -43,11 +45,11 @@ export default function join(socket: SocketType) {
 
       const signedPlayerId = jwt.sign({ id: sendPlayerId }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
-      //TODO: send room context to the client
       callback(
         success({
           signedPlayerId,
           playerData: player.getPlayerData(),
+          gameSettings: player.getRoom()!.getCurrentRoomInfo()
         }),
       );
     } catch (error) {

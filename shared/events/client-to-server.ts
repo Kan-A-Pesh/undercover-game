@@ -1,26 +1,20 @@
-import RoomCreatePayload from "shared/payloads/room-create";
-import RoomJoinPayload from "shared/payloads/room-join";
-import { ClientToServerEventTypes as EventTypes } from "shared/events/types/client-to-server";
-import { ResponseCallback } from "shared/response/callback";
-import PlayerData from "shared/models/player-data";
-import RoomSettings from "shared/models/room-settings";
+import RoomCreatePayload from "../payloads/room-create";
+import RoomJoinPayload from "../payloads/room-join";
+import { ClientToServerEventTypes as EventTypes } from "../events/types/client-to-server";
+import {
+    JoinResponseCallback,
+    ResponseCallback,
+} from "../response/callback";
 
 type ClientToServerEvents = {
     [EventTypes.ROOM_CREATE]: (
         payload: RoomCreatePayload,
-        callback: ResponseCallback<{
-            signedPlayerId: string;
-            playerData: PlayerData;
-        }>
+        callback: ResponseCallback<JoinResponseCallback>
     ) => void;
 
     [EventTypes.ROOM_JOIN]: (
         payload: RoomJoinPayload,
-        callback: ResponseCallback<{
-            signedPlayerId: string;
-            playerData: PlayerData;
-            gameSettings?: RoomSettings;
-        }>
+        callback: ResponseCallback<JoinResponseCallback>
     ) => void;
 };
 
