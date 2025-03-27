@@ -1,0 +1,15 @@
+venv/
+env/
+.venv/
+.env/
+ENV/
+model/
+*.bin
+.idea/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.gitignore
+.git
+Dockerfile

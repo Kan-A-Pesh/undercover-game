@@ -1,0 +1,14 @@
+name: undercover-dev
+
+services:
+  word-gen:
+    build:
+      context: ./services
+      target: dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./services:/app
+    environment:
+      - FLASK_ENV=development
+    command: flask run --host=0.0.0.0 --port=5000 --debug
