@@ -10,6 +10,7 @@ export default function create(socket: SocketType) {
     const { username, avatar } = payload;
 
     try {
+      //TODO: fix socket can create multiple rooms
       const player = new Player(username, avatar);
       player.createRoom();
 
@@ -20,7 +21,7 @@ export default function create(socket: SocketType) {
 
       const signedPlayerId = jwt.sign({ id: player.getId() }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
-      //TODO: send player and room contexts to the client
+      //TODO: send room context to the client
       callback(
         success({
           signedPlayerId,
