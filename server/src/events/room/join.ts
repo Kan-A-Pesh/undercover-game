@@ -22,6 +22,7 @@ export default function join(socket: SocketType) {
         if (!room) throw new Error("Room not found");
 
         player = new Player(username, avatar);
+        player.joinRoom(roomId);
         sendPlayerId = player.getId();
       } else {
         const { playerId } = jwt.verify(token, process.env.JWT_SECRET!) as {
@@ -40,15 +41,15 @@ export default function join(socket: SocketType) {
       if (!room) throw new Error("Room was not joined");
       socket.join(room.getId());
 
-      const signedPlayerId = jwt.sign({ id: sendPlayerId }, process.env.JWT_SECRET!, {expiresIn: 60 * 60 })
+      const signedPlayerId = jwt.sign({ id: sendPlayerId }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
       //TODO: send room context to the client
-            callback(
-              success({
-                signedPlayerId,
-                playerData: player.getPlayerData(),
-              })
-            );
+      callback(
+        success({
+          signedPlayerId,
+          playerData: player.getPlayerData(),
+        }),
+      );
     } catch (error) {
       if (error instanceof Error) {
         callback(failure(error.message));

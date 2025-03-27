@@ -1,7 +1,7 @@
 import PayloadCreateRoom from "./room-create";
 
 type PayloadJoinRoom = PayloadCreateRoom & {
-    token: string;
+    token?: string;
     roomId?: string;
 };
 

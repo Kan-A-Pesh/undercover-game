@@ -8,7 +8,7 @@ export default class Room {
   private context: RoomContext = new RoomContext();
 
   constructor() {
-    this.id = crypto.randomUUID();
+    this.id = crypto.randomUUID().substring(0, 6).toLocaleUpperCase();
     rooms.set(this.id, this);
   }
 
@@ -25,12 +25,12 @@ export default class Room {
   }
 
   public join(playerId: string): boolean {
-    console.log("Player: ", playerId, " has joined");
+    console.log("Player:", playerId, "has joined room:", this.id);
     return this.context.addPlayer(playerId);
   }
 
   public leave(playerId: string): boolean {
-    console.log("Player: ", playerId, " has left");
+    console.log("Player:", playerId, "has left room:", this.id);
     return this.context.removePlayer(playerId);
   }
 
