@@ -1,7 +1,9 @@
+import jwt from "jsonwebtoken";
+
 import Player from "@/game/player";
 import { SocketType } from "#/socket";
-import PlayerData from "shared/models/player-data";
-import {ClientToServerEventTypes as EventTypes} from "shared/events/types/client-to-server";
+import { ClientToServerEventTypes as EventTypes } from "shared/events/types/client-to-server";
+import { success, failure } from "shared/response/constructors";
 
 export default function create(socket: SocketType) {
   socket.on(EventTypes.ROOM_CREATE, (payload, callback) => {
@@ -16,18 +18,20 @@ export default function create(socket: SocketType) {
 
       socket.join(room.getId());
 
-      const playerData: PlayerData = {
-        username: player.getUsername(),
-        avatar: player.getAvatar(),
-      };
+      const signedPlayerId = jwt.sign({ id: player.getId() }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
       //TODO: send player and room contexts to the client
-      callback(playerData);
+      callback(
+        success({
+          signedPlayerId,
+          playerData: player.getPlayerData(),
+        }),
+      );
     } catch (error) {
       if (error instanceof Error) {
-        callback(error.message);
+        callback(failure(error.message));
       } else {
-        callback("An unknown error occurred");
+        callback(failure("An unknown error occurred"));
       }
 
       console.error(error);

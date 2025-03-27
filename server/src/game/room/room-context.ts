@@ -4,7 +4,6 @@ import RoomSettings from "shared/models/room-settings";
 export default class RoomContext {
   private state: BaseState;
   private settings: RoomSettings;
-  private hostId: string | null = null;
   private players: Set<string>; // All playerIds
   private spectators: Set<string>;
 
@@ -20,6 +19,7 @@ export default class RoomContext {
       wordChoosingDuration: 60,
       debateDuration: 60,
       votingDuration: 60,
+      spectatorMode: false,
     };
   }
 
@@ -27,20 +27,24 @@ export default class RoomContext {
     return this.state;
   }
 
-  public getMaxPlayer(): number {
-    return this.settings.maxPlayer;
-  }
-
   public getPlayers(): Set<string> {
     return this.players;
   }
 
-  public addPlayer(player: string) {
+  public addPlayer(player: string): boolean {
+    if (this.getPlayers().size >= this.settings.maxPlayer) {
+      if (!this.settings.spectatorMode) return false;
+      this.spectators.add(player);
+      return true;
+    };
     this.players.add(player);
+    return true;
   }
 
-  public removePlayer(player: string) {
+  public removePlayer(player: string): boolean {
+    if (!this.getPlayers().has(player)) return false;
     this.players.delete(player);
+    return true;
   }
 
   public getRoomInfo(): RoomSettings {
@@ -58,7 +62,7 @@ export default class RoomContext {
   }
 
   public isHost(playerId: string): boolean {
-    return this.hostId === playerId;
+    return playerId === this.players.values().next().value;
   }
 
 }

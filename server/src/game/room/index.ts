@@ -25,19 +25,13 @@ export default class Room {
   }
 
   public join(playerId: string): boolean {
-    const players = this.context.getPlayers();
-    if (players.size > this.context.getMaxPlayer()) return false;
-    this.context.addPlayer(playerId);
-    console.log("Joining room", playerId);
-    return true;
+    console.log("Player: ", playerId, " has joined");
+    return this.context.addPlayer(playerId);
   }
 
   public leave(playerId: string): boolean {
-    const isPlayer = this.context.getPlayers();
-    if (!isPlayer.has(playerId)) return false;
-    this.context.removePlayer(playerId);
-    console.log("Leaving room", playerId);
-    return true;
+    console.log("Player: ", playerId, " has left");
+    return this.context.removePlayer(playerId);
   }
 
   public getIo() {

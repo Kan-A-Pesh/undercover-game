@@ -4,7 +4,6 @@ enum RoomName {
   Setup = "Setup",
   WordAttribution = "WordAttribution"
 }
-
 export abstract class BaseState {
   protected name: RoomName;
   protected context!: RoomContext;
@@ -38,7 +37,6 @@ export class SetupState extends BaseState {
 export class WordAttributionState extends BaseState {
   //TODO: Implement word and role distribution
   //TODO: Display words to players
-
   constructor() {
     super(RoomName.WordAttribution);
   }
@@ -46,6 +44,8 @@ export class WordAttributionState extends BaseState {
   public distributeWords = () => {
 
   }
+
+
 }
 
 

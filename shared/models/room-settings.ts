@@ -8,6 +8,7 @@ type RoomSettings = {
     wordChoosingDuration: number;
     debateDuration: number;
     votingDuration: number;
+    spectatorMode: boolean;
 };
 
 export default RoomSettings;

@@ -1,42 +1,36 @@
+import PlayerData from "shared/models/player-data";
 import Room from "../room";
 
 const players = new Map<string, Player>();
 
 export default class Player {
   private id: string;
-
-  private username: string;
-  private avatar: string;
+  private playerData: PlayerData;
 
   private roomId?: string;
   private relatedSockets: Set<string> = new Set();
 
   constructor(username: string, avatar: string) {
     this.id = crypto.randomUUID();
+    this.playerData = { username, avatar };
     players.set(this.id, this);
-    this.username = username;
-    this.avatar = avatar;
   }
 
   public getId(): string {
     return this.id;
   }
 
-  public getUsername(): string {
-    return this.username;
-  }
-
-  public getAvatar(): string {
-    return this.avatar;
+  public getPlayerData(): PlayerData {
+    return this.playerData;
   }
 
   public setUsername(username: string) {
-    this.username = username;
+    this.playerData.username = username;
     this.getRoom()?.getIo().emit("update:player:username", this.id, username);
   }
 
   public setAvatar(avatar: string) {
-    this.avatar = avatar;
+    this.playerData.avatar = avatar;
     this.getRoom()?.getIo().emit("update:player:avatar", this.id, avatar);
   }
 
@@ -68,7 +62,7 @@ export default class Player {
     const room = Room.get(roomId);
     if (!room) throw new Error("Room not found");
     if (this.roomId === roomId) return;
-    if (!room.join(this.id)) throw new Error("Room is full");
+    if (!room.join(this.id)) throw new Error("Room is full and no spectator allowed");
 
     this.roomId = roomId;
   }
