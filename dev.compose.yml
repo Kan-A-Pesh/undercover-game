@@ -12,3 +12,17 @@ services:
     environment:
       - FLASK_ENV=development
     command: flask run --host=0.0.0.0 --port=5000 --debug
+
+  server:
+    build:
+      context: ./server
+      target: dev
+    ports:
+      - "3001:3001"
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-secret}
+      - SOCKET_PORT=3001
+      - NODE_ENV=development
+    volumes:
+      - ./server:/app
+      - ./shared:/shared
