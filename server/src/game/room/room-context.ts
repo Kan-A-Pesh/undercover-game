@@ -36,7 +36,7 @@ export default class RoomContext {
       if (!this.settings.spectatorMode) return false;
       this.spectators.add(player);
       return true;
-    };
+    }
     this.players.add(player);
     return true;
   }
@@ -64,5 +64,4 @@ export default class RoomContext {
   public isHost(playerId: string): boolean {
     return playerId === this.players.values().next().value;
   }
-
 }
