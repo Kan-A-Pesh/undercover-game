@@ -2,12 +2,11 @@ import jwt from "jsonwebtoken";
 
 import Player from "@/game/player";
 import { SocketType } from "#/socket";
-import { ClientToServerEventTypes as EventTypes } from "shared/events/types/client-to-server";
 import { success, failure } from "shared/response/constructors";
 import Room from "@/game/room";
 
 export default function join(socket: SocketType) {
-  socket.on(EventTypes.ROOM_JOIN, (PayloadJoinRoom, callback) => {
+  socket.on("room:join", (PayloadJoinRoom, callback) => {
     const { username, avatar, token, roomId } = PayloadJoinRoom;
 
     let player: Player | undefined;

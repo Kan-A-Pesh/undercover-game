@@ -5,10 +5,11 @@ const rooms = new Map<string, Room>();
 
 export default class Room {
   private id: string;
-  private context: RoomContext = new RoomContext();
+  private context: RoomContext;
 
   constructor() {
     this.id = crypto.randomUUID().substring(0, 6).toLocaleUpperCase();
+    this.context = new RoomContext(this);
     rooms.set(this.id, this);
   }
 
@@ -32,6 +33,11 @@ export default class Room {
   public leave(playerId: string): boolean {
     console.log("Player:", playerId, "has left room:", this.id);
     return this.context.removePlayer(playerId);
+  }
+
+  public isHost(playerId?: string): boolean {
+    if (!playerId) return false;
+    return this.context.isHost(playerId);
   }
 
   public getIo() {

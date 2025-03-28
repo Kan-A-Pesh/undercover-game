@@ -2,11 +2,10 @@ import jwt from "jsonwebtoken";
 
 import Player from "@/game/player";
 import { SocketType } from "#/socket";
-import { ClientToServerEventTypes as EventTypes } from "shared/events/types/client-to-server";
 import { success, failure } from "shared/response/constructors";
 
 export default function createOrJoin(socket: SocketType) {
-  socket.on(EventTypes.ROOM_CREATE, (payload, callback) => {
+  socket.on("room:create", (payload, callback) => {
     const { username, avatar } = payload;
 
     try {

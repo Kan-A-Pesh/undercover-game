@@ -1,38 +1,60 @@
 import PlayerData from "shared/models/player-data";
 import Room from "../room";
 import { io } from "@/server";
+import { PlayerProfile } from "shared/models/player-profile";
 
 const players = new Map<string, Player>();
 
 export default class Player {
   private id: string;
+  private profile: PlayerProfile;
   private playerData: PlayerData;
+  private isAlive: boolean;
 
   private roomId?: string;
   private relatedSocketId?: string;
 
   constructor(username: string, avatar: string) {
     this.id = crypto.randomUUID();
-    this.playerData = { username, avatar };
+    this.profile = { username, avatar };
+    this.playerData = {};
+    this.isAlive = true;
+
     players.set(this.id, this);
+  }
+
+  public getAliveStatus() {
+    return this.isAlive;
+  }
+
+  public kill() {
+    this.isAlive = false;
   }
 
   public getId(): string {
     return this.id;
   }
 
+  public getIo() {
+    if (!this.relatedSocketId) throw new Error("Player is not logged in");
+    return io.sockets.sockets.get(this.relatedSocketId);
+  }
+
   public getPlayerData(): PlayerData {
     return this.playerData;
   }
 
-  public setUsername(username: string) {
-    this.playerData.username = username;
-    this.getRoom()?.getIo().emit("update:player:username", this.id, username);
+  public setPlayerData(playerData: Partial<PlayerData>) {
+    this.playerData = { ...this.playerData, ...playerData };
   }
 
-  public setAvatar(avatar: string) {
-    this.playerData.avatar = avatar;
-    this.getRoom()?.getIo().emit("update:player:avatar", this.id, avatar);
+  public getProfile(): PlayerProfile {
+    return this.profile;
+  }
+
+  public setProfile(profile: PlayerProfile) {
+    this.profile = profile;
+    this.getRoom()?.getIo().emit("update:player:profile", this.id, profile);
   }
 
   public loginSocket(socketId: string) {
@@ -82,7 +104,12 @@ export default class Player {
     this.roomId = undefined;
   }
 
-  public static get(id: string): Player | undefined {
+  public static get(id?: string): Player | undefined {
+    if (!id) return undefined;
     return players.get(id);
+  }
+
+  public static getMultiple(ids: string[]): Player[] {
+    return ids.map((id) => Player.get(id)).filter((player) => player !== undefined) as Player[];
   }
 }
