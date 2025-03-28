@@ -63,8 +63,37 @@ class Word2vec:
 #!                              \(      )/     \(       )/         )/         
 #!                               '      '       '       '          '          
   def get_random_word(self):
-    return random.choice(self.model.index_to_key)
+    # Get a random word from the model's vocabulary
+    # Check if wordList.txt exists
+    if os.path.exists('wordList.txt'):
+      # Read words from the file
+      with open('wordList.txt', 'r') as file:
+        words = [line.strip() for line in file if line.strip()]
+      
+      # If there are words in the file, choose a random one
+      if words:
+        random_word = random.choice(words)
+      else:
+        # Fallback to model vocabulary if file is empty
+        random_word = random.choice(self.model.index_to_key)
+    else:
+      # Fallback to model vocabulary if file doesn't exist
+      random_word = random.choice(self.model.index_to_key)
+    
+    try:
+      # Find the closest word by vector similarity
+      closest_word = self.get_closest_word(random_word)
+      return [random_word, closest_word]
+    except KeyError:
+      # If there's an issue finding similar words, try another random word
+      return self.get_random_word()
   
+  def add_new_word(self, word):
+    # Check if the file exists, if not create it
+    file_path = 'wordList.txt'
+    with open(file_path, 'a') as file:
+      # Add new word with a line break
+      file.write(f"{word}\n")
   
   def get_closest_word(self, word):
     words = self.model.most_similar(word, topn=10)
