@@ -7,7 +7,7 @@ import Player from "../player";
 import { PlayerProfile } from "shared/models/player-profile";
 
 export default class RoomContext {
-  private state: BaseState;
+  private state: BaseState = new SetupState();
   private settings: RoomSettings;
   private players: Set<string>; // All playerIds
   private spectators: Set<string>;
@@ -16,7 +16,6 @@ export default class RoomContext {
 
   constructor(room: Room) {
     this.room = room;
-    this.state = new SetupState();
     this.players = new Set<string>();
     this.spectators = new Set<string>();
     this.settings = {
@@ -30,6 +29,7 @@ export default class RoomContext {
     };
     // Setting the shared data here to avoid lint error
     this.sharedData = this.resetSharedData();
+    this.transitionTo(new SetupState());
   }
 
   public getState(): BaseState {

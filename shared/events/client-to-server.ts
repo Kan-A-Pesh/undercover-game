@@ -21,7 +21,7 @@ type ClientToServerEvents = {
   ) => void;
 
   "player:profile:update": (
-    payload: PlayerProfile,
+    payload: Omit<PlayerProfile, "id">,
     callback: ResponseCallback<null>
   ) => void;
 

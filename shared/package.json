@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "type-fest": "^4.38.0",
     "zod": "^3.24.2"
   }
 }

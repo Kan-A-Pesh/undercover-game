@@ -16,7 +16,7 @@ export default class Player {
 
   constructor(username: string, avatar: string) {
     this.id = crypto.randomUUID();
-    this.profile = { username, avatar };
+    this.profile = { id: this.id, username, avatar };
     this.playerData = {};
     this.isAlive = true;
 

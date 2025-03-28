@@ -55,12 +55,15 @@ export default function join(socket: SocketType) {
 
       const signedPlayerId = jwt.sign({ playerId: sendPlayerId }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
+      checkRoom.broadcastPlayers();
+
       callback(
         success({
           signedPlayerId,
           playerData: player.getPlayerData(),
           gameSettings: player.getRoom()!.getCurrentRoomInfo(),
           roomId: checkRoom.getId(),
+          playerId: sendPlayerId,
         }),
       );
     } catch (error) {
