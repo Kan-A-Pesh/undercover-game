@@ -54,7 +54,7 @@ export default class Player {
 
   public setProfile(profile: PlayerProfile) {
     this.profile = profile;
-    this.getRoom()?.getIo().emit("update:player:profile", this.id, profile);
+    this.getRoom()?.getIo().emit("player:profile:updated", this.id, profile);
   }
 
   public loginSocket(socketId: string) {

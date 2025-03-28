@@ -4,9 +4,9 @@ import { RoomName } from "shared/models/room-name";
 import { Role } from "shared/models/role";
 
 type ServerToClientEvents = {
-  "update:player:profile": (playerId: string, profile: PlayerProfile) => void;
-  "update:room:settings": (settings: RoomSettings) => void;
-  "update:room:players": (players: PlayerProfile[]) => void;
+  "player:profile:updated": (playerId: string, profile: PlayerProfile) => void;
+  "room:settings:updated": (settings: RoomSettings) => void;
+  "room:players:updated": (players: PlayerProfile[]) => void;
   "game:state:updated": (state: RoomName, duration?: number) => void;
   "game:word:attribution": (word: string | null) => void;
   "game:word:choosing": (playerId: string) => void;

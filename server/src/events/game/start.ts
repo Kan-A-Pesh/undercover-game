@@ -2,12 +2,11 @@ import Player from "@/game/player";
 import { SocketType } from "#/socket";
 import { ResponseCallback } from "shared/response/callback";
 import { success, failure } from "shared/response/constructors";
-import RoomSettings from "shared/models/room-settings";
-import { RoomName } from "shared/models/room-name";
 import { SetupState } from "@/game/room/states/setup";
+import { RoomName } from "shared/models/room-name";
 
-export default function settingsUpdate(socket: SocketType) {
-  socket.on("room:settings:update", (payload: Partial<RoomSettings>, callback: ResponseCallback<null>) => {
+export default function start(socket: SocketType) {
+  socket.on("game:setup:start", (payload: null, callback: ResponseCallback<null>) => {
     try {
       const room = Player.get(socket.data.playerId)?.getRoom();
 
@@ -19,10 +18,7 @@ export default function settingsUpdate(socket: SocketType) {
       if (!currentState.is(RoomName.Setup)) throw new Error("Cannot update settings in this state");
       const state = currentState as SetupState;
 
-      const settings = state.getSettings();
-      const updatedSettings = { ...settings, ...payload };
-
-      state.setSettings(updatedSettings);
+      state.startGame();
 
       callback(success(null));
     } catch (error) {

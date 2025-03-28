@@ -3,6 +3,8 @@ import RoomSettings from "shared/models/room-settings";
 import { SetupState } from "./states/setup";
 import Room from "../room";
 import { SharedData } from "./shared-data";
+import Player from "../player";
+import { PlayerProfile } from "shared/models/player-profile";
 
 export default class RoomContext {
   private state: BaseState;
@@ -36,6 +38,10 @@ export default class RoomContext {
 
   public getPlayers(): Set<string> {
     return this.players;
+  }
+
+  public getPlayerProfiles(): PlayerProfile[] {
+    return Array.from(this.players).map((player) => Player.get(player)!.getProfile());
   }
 
   public resetSharedData() {

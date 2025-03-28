@@ -20,10 +20,31 @@ type ClientToServerEvents = {
     callback: ResponseCallback<null>
   ) => void;
 
-  "room:start": (payload: null, callback: ResponseCallback<null>) => void;
-
   "player:profile:update": (
     payload: PlayerProfile,
+    callback: ResponseCallback<null>
+  ) => void;
+
+  "game:setup:start": (payload: null, callback: ResponseCallback<null>) => void;
+
+  "game:results:mr-white-guess": (
+    payload: {
+      word: string;
+    },
+    callback: ResponseCallback<null>
+  ) => void;
+
+  "game:voting:vote": (
+    payload: {
+      vote: string;
+    },
+    callback: ResponseCallback<null>
+  ) => void;
+
+  "game:word:choose": (
+    payload: {
+      word: string;
+    },
     callback: ResponseCallback<null>
   ) => void;
 };

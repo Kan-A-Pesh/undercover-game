@@ -12,6 +12,7 @@ export class SetupState extends BaseState {
 
   public setSettings = (settings: RoomSettings): boolean => {
     this.context.setSettings(settings);
+    this.context.getRoom().getIo().emit("room:settings:updated", settings);
     return true;
   };
 

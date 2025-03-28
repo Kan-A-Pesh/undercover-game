@@ -52,12 +52,16 @@ export class WordChoosingState extends BaseState {
     this.nextPlayerTimeout = setTimeout(this.nextPlayer, this.getStateDuration() * 1000);
   };
 
-  public onWordChosen = (word: string) => {
+  public onWordChosen = (playerId: string, word: string) => {
     if (this.nextPlayerTimeout) {
       clearTimeout(this.nextPlayerTimeout);
     }
 
-    const playerId = this.playersRefCopy[this.currentPlayerIndex].getId();
+    const nextPlayerId = this.playersRefCopy[this.currentPlayerIndex].getId();
+    if (nextPlayerId !== playerId) {
+      throw new Error("Player is not the next player");
+    }
+
     this.context.getRoom().getIo().emit("game:word:chosen", playerId, word);
     this.playersRefCopy[this.currentPlayerIndex].setPlayerData({ chosenWord: word });
 

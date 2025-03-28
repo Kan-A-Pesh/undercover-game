@@ -1,13 +1,12 @@
-import Player from "@/game/player";
 import { SocketType } from "#/socket";
 import { ResponseCallback } from "shared/response/callback";
+import Player from "@/game/player";
 import { success, failure } from "shared/response/constructors";
-import RoomSettings from "shared/models/room-settings";
+import { ResultsState } from "@/game/room/states/results";
 import { RoomName } from "shared/models/room-name";
-import { SetupState } from "@/game/room/states/setup";
 
-export default function settingsUpdate(socket: SocketType) {
-  socket.on("room:settings:update", (payload: Partial<RoomSettings>, callback: ResponseCallback<null>) => {
+export default function mrWhiteGuess(socket: SocketType) {
+  socket.on("game:results:mr-white-guess", (payload: { word: string }, callback: ResponseCallback<null>) => {
     try {
       const room = Player.get(socket.data.playerId)?.getRoom();
 
@@ -16,13 +15,10 @@ export default function settingsUpdate(socket: SocketType) {
 
       const currentState = room.getCurrentRoomState();
 
-      if (!currentState.is(RoomName.Setup)) throw new Error("Cannot update settings in this state");
-      const state = currentState as SetupState;
+      if (!currentState.is(RoomName.Results)) throw new Error("Cannot guess in this state");
+      const state = currentState as ResultsState;
 
-      const settings = state.getSettings();
-      const updatedSettings = { ...settings, ...payload };
-
-      state.setSettings(updatedSettings);
+      state.onMrWhiteGuess(socket.data.playerId!, payload.word);
 
       callback(success(null));
     } catch (error) {

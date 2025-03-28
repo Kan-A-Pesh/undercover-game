@@ -27,11 +27,13 @@ export default class Room {
 
   public join(playerId: string): boolean {
     console.log("Player:", playerId, "has joined room:", this.id);
+    this.getIo().emit("room:players:updated", this.context.getPlayerProfiles());
     return this.context.addPlayer(playerId);
   }
 
   public leave(playerId: string): boolean {
     console.log("Player:", playerId, "has left room:", this.id);
+    this.getIo().emit("room:players:updated", this.context.getPlayerProfiles());
     return this.context.removePlayer(playerId);
   }
 

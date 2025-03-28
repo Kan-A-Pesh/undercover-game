@@ -1,12 +1,12 @@
-import Player from "@/game/player";
 import { SocketType } from "#/socket";
 import { ResponseCallback } from "shared/response/callback";
+import Player from "@/game/player";
 import { success, failure } from "shared/response/constructors";
-import { SetupState } from "@/game/room/states/setup";
-import { RoomName } from "@/game/room/room-state";
+import { VotingState } from "@/game/room/states/voting";
+import { RoomName } from "shared/models/room-name";
 
-export default function start(socket: SocketType) {
-  socket.on("room:start", (payload: null, callback: ResponseCallback<null>) => {
+export default function vote(socket: SocketType) {
+  socket.on("game:voting:vote", (payload: { vote: string }, callback: ResponseCallback<null>) => {
     try {
       const room = Player.get(socket.data.playerId)?.getRoom();
 
@@ -15,10 +15,10 @@ export default function start(socket: SocketType) {
 
       const currentState = room.getCurrentRoomState();
 
-      if (!currentState.is(RoomName.Setup)) throw new Error("Cannot update settings in this state");
-      const state = currentState as SetupState;
+      if (!currentState.is(RoomName.Voting)) throw new Error("Cannot vote in this state");
+      const state = currentState as VotingState;
 
-      state.startGame();
+      state.onVote(socket.data.playerId!, payload.vote);
 
       callback(success(null));
     } catch (error) {
