@@ -1,13 +1,12 @@
 import RuleCard from "@/components/layout/rules/rule-card";
 import Button from "@/components/ui/button";
 import Text from "@/components/ui/text";
-import { useAppDispatch } from "@/store/hooks";
-import { setRoute } from "@/store/slices/router";
+import useRouterStore from "@/store/router";
 
 export default function RulesScreen() {
-  const dispatch = useAppDispatch();
+  const setRoute = useRouterStore((state) => state.setRoute);
 
-  const handleHome = () => dispatch(setRoute("home"));
+  const handleHome = () => setRoute("home");
 
   return (
     <div className="flex flex-1 flex-col gap-16 items-start px-4 md:px-12 lg:px-24 py-12 md:py-16 lg:py-32">

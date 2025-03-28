@@ -9,6 +9,7 @@ export default {
     },
     fontSize: {
       display: ["96px", "48px"],
+      "small-display": ["48px", "24px"],
       title: ["32px", "24px"],
       paragraph: ["12px", "16px"],
       caption: ["10px", "10px"],

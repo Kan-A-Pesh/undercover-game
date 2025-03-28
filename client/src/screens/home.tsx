@@ -2,23 +2,48 @@ import Hat from "@/assets/svgs/hat";
 import { JoinRoomModal } from "@/components/modals/join-room";
 import Button from "@/components/ui/button";
 import Text from "@/components/ui/text";
-import { useAppDispatch } from "@/store/hooks";
-import { setRoute } from "@/store/slices/router";
+import socket from "@/socket";
+import useRouterStore from "@/store/router";
+import useMyProfileStore from "@/store/my-profile";
 import { useState } from "react";
+import Input from "@/components/ui/input";
+import useSettingsStore from "@/store/settings";
+import useRoomStore from "@/store/room";
 
 export default function HomeScreen() {
   // Rules
-  const dispatch = useAppDispatch();
-  const handleReadRules = () => dispatch(setRoute("rules"));
+  const setRoute = useRouterStore((state) => state.setRoute);
+  const handleReadRules = () => setRoute("rules");
+
+  const myProfileStore = useMyProfileStore();
+  const setSettings = useSettingsStore((state) => state.setSettings);
+  const setRoomId = useRoomStore((state) => state.setRoomId);
 
   // Join Room
   const [isJoinRoomModalOpen, setIsJoinRoomModalOpen] = useState(false);
-  const handleJoinRoom = (code: string) => {
-    console.log(code);
-  };
 
-  // Create Room
-  const handleCreateRoom = () => console.log("create room");
+  const handleCreateOrJoinRoom = (code?: string) => {
+    socket.emit(
+      code ? "room:join" : "room:create",
+      {
+        roomId: code,
+        username: myProfileStore.username,
+        avatar: myProfileStore.avatar,
+      },
+      (response) => {
+        if (!response.success) {
+          console.error(response.error);
+          return;
+        }
+
+        setSettings(response.data.gameSettings);
+        setRoomId(response.data.roomId);
+
+        myProfileStore.setId(response.data.playerId);
+        setRoute("game");
+      },
+    );
+  };
 
   return (
     <>
@@ -30,10 +55,25 @@ export default function HomeScreen() {
         </div>
         <main className="flex flex-1 flex-col items-center justify-center gap-4 max-w-64 mx-auto">
           <section className="flex-1 flex flex-col items-center justify-center gap-2 w-full">
+            <div className="w-full p-1 border border-white/20 mb-2 flex gap-2 items-center">
+              <div className="relative h-[34px] w-[34px] min-w-[34px] border border-white/30">
+                <img src={myProfileStore.avatar} alt="" className="w-full h-full object-cover" />
+              </div>
+
+              <Input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                className="w-full"
+                value={myProfileStore.username}
+                onChange={(e) => myProfileStore.setUsername(e.target.value)}
+              />
+            </div>
+
             <Button icon="login" onClick={() => setIsJoinRoomModalOpen(true)} className="w-full">
               Join a room
             </Button>
-            <Button color="white" icon="plus" onClick={handleCreateRoom} className="w-full">
+            <Button color="white" icon="plus" onClick={() => handleCreateOrJoinRoom()} className="w-full">
               Create a room
             </Button>
             <Button type="outlined" color="white" icon="scroll" onClick={handleReadRules} className="w-full">
@@ -57,7 +97,7 @@ export default function HomeScreen() {
       <JoinRoomModal
         isOpen={isJoinRoomModalOpen}
         onClose={() => setIsJoinRoomModalOpen(false)}
-        onJoin={handleJoinRoom}
+        onJoin={handleCreateOrJoinRoom}
       />
     </>
   );

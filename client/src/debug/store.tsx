@@ -1,13 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setRoute } from "@/store/slices/router";
+import useRouterStore from "@/store/router";
 import { Route, Routes } from "@/types/routes";
 
 export default function DebugStore() {
-  const route = useAppSelector((state) => state.router.route);
-  const dispatch = useAppDispatch();
+  const { route, setRoute } = useRouterStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setRoute(e.target.value as Route));
+    setRoute(e.target.value as Route);
   };
 
   return (
