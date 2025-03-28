@@ -98,12 +98,12 @@ class Word2vec:
   def get_closest_word(self, word):
     words = self.model.most_similar(word, topn=10)
     
-    closestwords = [word[0] for word in words]
-    print (closestwords)
+    closest_words = [word[0] for word in words]
+    print(closest_words)
     
-    randomWord = random.choice(closestwords)
-    max_retries = 10
+    randomWord = random.choice(closest_words)
     retries = 0
+    max_retries = 10
     while word.lower() in randomWord.lower() and retries < max_retries:
         randomWord = random.choice(closestwords)
         retries += 1

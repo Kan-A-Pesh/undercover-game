@@ -6,11 +6,11 @@ from flask import request
 app = Flask(__name__)
 model = Word2vec()
 
-@app.get("/RandomWord")
+@app.get("/random-word")
 def random_word():
     return model.get_random_word()
 
-@app.post("/addNewWord")
+@app.post("/add-new-word")
 def add_new_word():
     data = request.get_json()
     word = data.get('word')
@@ -19,7 +19,7 @@ def add_new_word():
     model.add_new_word(word)
     return {"message": f"The word '{word}' has been successfully added to the word list."}, 200
 
-@app.get("/ClosestWord/<word>")
+@app.get("/closest-word/<word>")
 def closest_word(word):
     return model.get_closest_word(word)
 
