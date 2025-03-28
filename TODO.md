@@ -4,14 +4,21 @@
 
 - [x] Settings page
 - [ ] Implement reconnection
+
 - [x] Word Attribution page design
-- [ ] Word Attribution implementation
-- [ ] Word Choosing page design
-- [ ] Word Choosing implementation
+- [x] Word Attribution implementation
+- [ ] Add reveal animation
+
+- [x] Word Choosing page design
+- [x] Word Choosing implementation
+- [ ] Add word choosing timer
+
 - [ ] Debate page design
 - [ ] Debate implementation
+
 - [ ] Voting page design
 - [ ] Voting implementation
+
 - [ ] End page design
 - [ ] End page implementation
 

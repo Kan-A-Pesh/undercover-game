@@ -21,8 +21,6 @@ export class WordAttributionState extends BaseState {
     const roles = [...mrWhiteRoles, ...agentRoles, ...civilianRoles];
     const shuffledRoles = roles.sort(() => Math.random() - 0.5); // TODO: Make this more secure lol
 
-    console.log("roles", roles);
-
     //! TODO: Fetch words from the service
     const civilianWord = "cat (cvl)";
     const agentWord = "dog (agt)";
@@ -32,8 +30,6 @@ export class WordAttributionState extends BaseState {
     // Distribute the roles and words to the players
     players.forEach((player, index) => {
       player.setPlayerData({ role: shuffledRoles[index] });
-
-      console.log("player", player.getProfile().username, shuffledRoles[index]);
 
       if (shuffledRoles[index] === Role.Civilian) {
         player.getIo()?.emit("game:word:attribution", civilianWord);

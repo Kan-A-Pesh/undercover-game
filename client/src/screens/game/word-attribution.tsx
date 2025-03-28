@@ -8,7 +8,7 @@ export default function WordAttributionScreen() {
   if (word === undefined) return null;
 
   return (
-    <div className="min-h-screen bg-black p-6 flex flex-col gap-8 items-stretch justify-center">
+    <div className="flex flex-col gap-8 items-stretch justify-center">
       <Text type="title">&gt; {word ? "Your word is" : "You are"}</Text>
       <h1 className={clsx("font-body text-small-display", word ? "text-secondary" : "text-white")}>
         {word ?? "Mr. White"}

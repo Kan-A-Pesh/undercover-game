@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LobbyScreen from "./game/lobby";
 import WordAttributionScreen from "./game/word-attribution";
 import { RoomName } from "#/models/room-name";
+import WordChoosingScreen from "./game/word-choosing";
 
 export default function GameScreen() {
   const [gameState, setGameState] = useState(RoomName.Setup);
@@ -19,20 +20,14 @@ export default function GameScreen() {
     };
   }, []);
 
-  let GameState = null;
-
-  switch (gameState) {
-    case RoomName.Setup:
-      GameState = LobbyScreen;
-      break;
-    case RoomName.WordAttribution:
-      GameState = WordAttributionScreen;
-      break;
-  }
-
   return (
     <div className="min-h-screen bg-black p-6 flex flex-col gap-8">
-      {GameState && <GameState />}
+      {gameState === RoomName.Setup && <LobbyScreen />}
+      {gameState === RoomName.WordAttribution && <WordAttributionScreen />}
+
+      {(gameState === RoomName.WordChoosing || gameState === RoomName.Debate || gameState === RoomName.Voting) && (
+        <WordChoosingScreen state={gameState} />
+      )}
 
       <GameChat />
     </div>

@@ -23,7 +23,7 @@ export default {
       transparent: "transparent",
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animation-delay")],
   safelist: [
     {
       pattern: /(font|text|bg|border)-(.*)/,

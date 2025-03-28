@@ -8,6 +8,7 @@ import useMyProfileStore from "@/store/my-profile";
 import socket from "@/socket";
 import useRoomStore from "@/store/room";
 import Input from "@/components/ui/input";
+import YouBadge from "@/components/layout/you-badge";
 
 export default function LobbyScreen() {
   const playerStore = usePlayersStore();
@@ -60,7 +61,7 @@ export default function LobbyScreen() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <div className="w-24 h-24 border border-white flex-shrink-0 relative">
           {/* TODO: Add avatar */}
@@ -85,7 +86,7 @@ export default function LobbyScreen() {
         </div>
       </div>
 
-      <header className="flex gap-4 items-center">
+      <header className="flex gap-4 items-center mt-6 mb-6">
         <Text type="title">Room ID</Text>
 
         <hr className="border-t border-t-white/25 flex-1" />
@@ -100,7 +101,7 @@ export default function LobbyScreen() {
       <LobbySettings hasHostPermission={hasHostPermission} />
 
       {/* Members */}
-      <div>
+      <div className="mt-6 mb-24">
         <Text type="title" className="mb-4">
           Members
         </Text>
@@ -112,15 +113,7 @@ export default function LobbyScreen() {
               <Text>{member.username}</Text>
 
               {member.isHost && <Icon name="crown" color="white" size={16} />}
-
-              {member.isYou && (
-                <div className="inline-flex bg-primary px-1 py-0.5">
-                  <Text type="caption" color="white">
-                    YOU
-                  </Text>
-                </div>
-              )}
-
+              {member.isYou && <YouBadge />}
               {hasHostPermission && <Button className="ms-auto" size="sm" type="outlined" icon="cross" />}
             </div>
           ))}
@@ -128,12 +121,12 @@ export default function LobbyScreen() {
       </div>
 
       {/* Bottom Actions */}
-      <div className="mt-auto flex gap-2">
+      <div className="mt-auto flex gap-2 fixed bottom-6 left-6 right-6">
         <Button icon="logout" type="outlined" color="white" />
         <Button color="primary" className="flex-1 mr-12" disabled={!hasHostPermission} onClick={handleStartGame}>
           Start game
         </Button>
       </div>
-    </>
+    </div>
   );
 }

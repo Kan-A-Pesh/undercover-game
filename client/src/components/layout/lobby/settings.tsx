@@ -11,7 +11,7 @@ interface LobbySettingsProps {
 }
 
 export default function LobbySettings({ hasHostPermission }: LobbySettingsProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const settingsStore = useSettingsStore();
 
   // Sync room settings (update)
