@@ -24,7 +24,9 @@ export class WordChoosingState extends BaseState {
   }
 
   public onTransition = () => {
-    this.playersRefCopy = Player.getMultiple(Array.from(this.context.getPlayers()));
+    this.playersRefCopy = Player.getMultiple(Array.from(this.context.getPlayers())).filter((player) =>
+      player.getAliveStatus(),
+    );
 
     // Select a random player to start the word choosing
     this.currentPlayerIndex = Math.floor(Math.random() * this.playersRefCopy.length);
@@ -33,7 +35,7 @@ export class WordChoosingState extends BaseState {
     this.sendWordChoosing();
   };
 
-  public getStateDuration = () => this.context.getSettings().wordChoosingDuration;
+  public getStateDuration = () => undefined;
 
   public nextPlayer = () => {
     if (this.currentPlayerIndex !== this.startPlayerIndex) {
@@ -47,9 +49,12 @@ export class WordChoosingState extends BaseState {
   public sendWordChoosing = () => {
     this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playersRefCopy.length;
     const player = this.playersRefCopy[this.currentPlayerIndex];
-    this.context.getRoom().getIo().emit("game:word:choosing", player.getId());
+    this.context
+      .getRoom()
+      .getIo()
+      .emit("game:word:choosing", player.getId(), this.context.getSettings().wordChoosingDuration);
 
-    this.nextPlayerTimeout = setTimeout(this.nextPlayer, this.getStateDuration() * 1000);
+    this.nextPlayerTimeout = setTimeout(this.nextPlayer, this.context.getSettings().wordChoosingDuration * 1000);
   };
 
   public onWordChosen = (playerId: string, word: string) => {

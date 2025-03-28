@@ -11,7 +11,6 @@ export default function vote(socket: SocketType) {
       const room = Player.get(socket.data.playerId)?.getRoom();
 
       if (!room) throw new Error("No room/player found");
-      if (!room.isHost(socket.data.playerId)) throw new Error("Player is not the host");
 
       const currentState = room.getCurrentRoomState();
 

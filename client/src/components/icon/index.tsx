@@ -20,6 +20,7 @@ export interface IconProps {
   size?: number;
   color?: Color;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export type IconName = keyof typeof icons;
@@ -43,7 +44,7 @@ const icons = {
   zzz: Zzz,
 } as const;
 
-export default function Icon({ name, size = 24, color = "current", className }: IconProps) {
+export default function Icon({ name, size = 24, color = "current", className, style }: IconProps) {
   const IconComponent = icons[name];
   return (
     <svg
@@ -53,6 +54,7 @@ export default function Icon({ name, size = 24, color = "current", className }: 
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={clsx(`text-${color}`, className)}
+      style={style}
     >
       <IconComponent />
     </svg>

@@ -1,13 +1,12 @@
 import { RoomName } from "shared/models/room-name";
 import { BaseState } from "../room-state";
-import { MR_WHITE_GUESS_DURATION, RESULTS_DURATION } from "shared/constants/results";
-import { SetupState } from "./setup";
+import { VOTE_RESULTS_DURATION } from "shared/constants/results";
 import Player from "@/game/player";
 import { Role } from "shared/models/role";
-import { WordChoosingState } from "./word-choosing";
+import { PostResultsState } from "./post-results";
 
-export class ResultsState extends BaseState {
-  public readonly name: RoomName = RoomName.Results;
+export class VoteResultsState extends BaseState {
+  public readonly name: RoomName = RoomName.VoteResults;
 
   private resultsEndTimeout: NodeJS.Timeout | null;
 
@@ -16,7 +15,7 @@ export class ResultsState extends BaseState {
     this.resultsEndTimeout = null;
   }
 
-  public getStateDuration = () => MR_WHITE_GUESS_DURATION;
+  public getStateDuration = () => VOTE_RESULTS_DURATION;
 
   public onMrWhiteGuess = (playerId: string, word: string) => {
     if (this.context.getSharedData().lastEliminatedPlayerId !== playerId) return;
@@ -27,8 +26,8 @@ export class ResultsState extends BaseState {
       clearTimeout(this.resultsEndTimeout);
     }
 
-    this.context.getRoom().getIo().emit("game:end", Role.MrWhite);
-    this.onResultsEnded();
+    this.context.setSharedData({ winner: Role.MrWhite });
+    this.context.transitionTo(new PostResultsState());
   };
 
   public onTransition = () => {
@@ -37,8 +36,8 @@ export class ResultsState extends BaseState {
 
       // Check if no undercover players are alive
       if (players.filter((player) => player.getPlayerData().role !== Role.Civilian).length === 0) {
-        this.context.getRoom().getIo().emit("game:end", Role.Civilian);
-        this.onResultsEnded();
+        this.context.setSharedData({ winner: Role.Civilian });
+        this.context.transitionTo(new PostResultsState());
         return;
       }
 
@@ -47,19 +46,13 @@ export class ResultsState extends BaseState {
         players.length <= 2 &&
         players.filter((player) => player.getPlayerData().role !== Role.Civilian).length >= 1
       ) {
-        this.context.getRoom().getIo().emit("game:end", Role.Agent);
-        this.onResultsEnded();
+        this.context.setSharedData({ winner: Role.Agent });
+        this.context.transitionTo(new PostResultsState());
         return;
       }
 
       // If no one is alive, a new round starts
-      this.context.transitionTo(new WordChoosingState());
+      this.context.transitionTo(new PostResultsState());
     }, this.getStateDuration() * 1000);
-  };
-
-  public onResultsEnded = () => {
-    setTimeout(() => {
-      this.context.transitionTo(new SetupState());
-    }, RESULTS_DURATION * 1000);
   };
 }

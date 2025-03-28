@@ -4,6 +4,8 @@
 
 - [x] Settings page
 - [ ] Implement reconnection
+- [ ] Add a "background" color (gray)
+- [ ] Add background on "Start game" button
 
 - [x] Word Attribution page design
 - [x] Word Attribution implementation

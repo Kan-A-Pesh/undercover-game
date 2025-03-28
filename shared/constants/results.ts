@@ -1,2 +1,2 @@
-export const MR_WHITE_GUESS_DURATION = 7;
-export const RESULTS_DURATION = 3;
+export const VOTE_RESULTS_DURATION = 15;
+export const POST_RESULTS_DURATION = 5;

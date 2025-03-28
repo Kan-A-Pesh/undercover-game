@@ -2,7 +2,7 @@ import { SocketType } from "#/socket";
 import { ResponseCallback } from "shared/response/callback";
 import Player from "@/game/player";
 import { success, failure } from "shared/response/constructors";
-import { ResultsState } from "@/game/room/states/results";
+import { VoteResultsState } from "@/game/room/states/vote-results";
 import { RoomName } from "shared/models/room-name";
 
 export default function mrWhiteGuess(socket: SocketType) {
@@ -15,8 +15,8 @@ export default function mrWhiteGuess(socket: SocketType) {
 
       const currentState = room.getCurrentRoomState();
 
-      if (!currentState.is(RoomName.Results)) throw new Error("Cannot guess in this state");
-      const state = currentState as ResultsState;
+      if (!currentState.is(RoomName.VoteResults)) throw new Error("Cannot guess in this state");
+      const state = currentState as VoteResultsState;
 
       state.onMrWhiteGuess(socket.data.playerId!, payload.word);
 

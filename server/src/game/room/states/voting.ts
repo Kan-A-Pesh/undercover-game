@@ -1,24 +1,30 @@
 import Player from "@/game/player";
 import { BaseState } from "../room-state";
 import { RoomName } from "shared/models/room-name";
-import { ResultsState } from "./results";
+import { VoteResultsState } from "./vote-results";
 
 export class VotingState extends BaseState {
   public readonly name: RoomName = RoomName.Voting;
 
   private playersRefCopy: Player[];
   private playersRefCopyMap: { [key: string]: Player };
+
+  private playersVotes: { [key: string]: string };
   private votingEndTimeout: NodeJS.Timeout | null;
 
   constructor() {
     super();
     this.playersRefCopy = [];
     this.playersRefCopyMap = {};
+    this.playersVotes = {};
     this.votingEndTimeout = null;
   }
 
   public onTransition = () => {
-    this.playersRefCopy = Player.getMultiple(Array.from(this.context.getPlayers()));
+    this.playersRefCopy = Player.getMultiple(Array.from(this.context.getPlayers())).filter((player) =>
+      player.getAliveStatus(),
+    );
+
     this.playersRefCopyMap = this.playersRefCopy.reduce(
       (acc, player) => {
         acc[player.getId()] = player;
@@ -35,17 +41,16 @@ export class VotingState extends BaseState {
   public onVote = (playerId: string, vote: string) => {
     const player = this.playersRefCopyMap[playerId];
     if (!player) throw new Error("Player not found");
-    if (player.getPlayerData().votedPlayer) throw new Error("Player already voted");
+    if (this.playersVotes[playerId]) throw new Error("Player already voted");
 
     const votedPlayer = this.playersRefCopyMap[vote];
     if (!votedPlayer) throw new Error("Voted player not found");
 
-    this.playersRefCopyMap[playerId].setPlayerData({ votedPlayer: votedPlayer.getId() });
+    this.playersVotes[playerId] = vote;
     this.context.getRoom().getIo().emit("game:vote:voted", playerId);
 
     // Check remaining votes
-    const remainingVotes = this.playersRefCopy.filter((player) => !player.getPlayerData().votedPlayer);
-    if (remainingVotes.length === 0) {
+    if (Object.keys(this.playersVotes).length === this.playersRefCopy.length) {
       this.onVotingEnded();
     }
   };
@@ -58,7 +63,7 @@ export class VotingState extends BaseState {
     // Send the vote count to all players
     const playersVotes = this.playersRefCopy.reduce(
       (acc, player) => {
-        const votedPlayer = player.getPlayerData().votedPlayer;
+        const votedPlayer = this.playersVotes[player.getId()];
         if (!votedPlayer) return acc;
 
         if (!acc[votedPlayer]) acc[votedPlayer] = 0;
@@ -81,6 +86,6 @@ export class VotingState extends BaseState {
       this.context.getRoom().getIo().emit("game:vote:results", playersVotes, null);
     }
 
-    this.context.transitionTo(new ResultsState());
+    this.context.transitionTo(new VoteResultsState());
   };
 }

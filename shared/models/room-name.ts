@@ -5,5 +5,6 @@ export enum RoomName {
   WordChoosing = "WordChoosing",
   Debate = "Debate",
   Voting = "Voting",
-  Results = "Results",
+  VoteResults = "VoteResults",
+  PostResults = "PostResults",
 }

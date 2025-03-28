@@ -9,14 +9,14 @@ type ServerToClientEvents = {
   "room:players:updated": (players: PlayerProfile[]) => void;
   "game:state:updated": (state: RoomName, duration?: number) => void;
   "game:word:attribution": (word: string | null) => void;
-  "game:word:choosing": (playerId: string) => void;
+  "game:word:choosing": (playerId: string, duration: number) => void;
   "game:word:chosen": (playerId: string, word: string) => void;
   "game:vote:voted": (playerId: string) => void;
   "game:vote:results": (
     votes: { [key: string]: number },
     eliminatedPlayerId: string | null
   ) => void;
-  "game:end": (winnerRole: Role) => void;
+  "game:round:ended": (winnerRole?: Role) => void;
 };
 
 export default ServerToClientEvents;
