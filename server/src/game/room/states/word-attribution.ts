@@ -16,12 +16,12 @@ export class WordAttributionState extends BaseState {
 
     const mrWhiteRoles = [...Array(settings.mrWhiteCount)].map(() => Role.MrWhite);
     const agentRoles = [...Array(settings.agentCount)].map(() => Role.Agent);
-    const civilianRoles = [...Array(settings.maxPlayer - mrWhiteRoles.length - agentRoles.length)].map(
-      () => Role.Civilian,
-    );
+    const civilianRoles = [...Array(players.length - mrWhiteRoles.length - agentRoles.length)].map(() => Role.Civilian);
 
     const roles = [...mrWhiteRoles, ...agentRoles, ...civilianRoles];
     const shuffledRoles = roles.sort(() => Math.random() - 0.5); // TODO: Make this more secure lol
+
+    console.log("roles", roles);
 
     //! TODO: Fetch words from the service
     const civilianWord = "cat (cvl)";
@@ -32,6 +32,8 @@ export class WordAttributionState extends BaseState {
     // Distribute the roles and words to the players
     players.forEach((player, index) => {
       player.setPlayerData({ role: shuffledRoles[index] });
+
+      console.log("player", player.getProfile().username, shuffledRoles[index]);
 
       if (shuffledRoles[index] === Role.Civilian) {
         player.getIo()?.emit("game:word:attribution", civilianWord);
