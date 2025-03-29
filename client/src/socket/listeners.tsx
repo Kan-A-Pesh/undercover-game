@@ -30,6 +30,7 @@ export default function SocketListeners() {
     });
 
     socket.on("game:round:ended", (winnerRole) => {
+      console.log("game:round:ended", winnerRole);
       setWinnerRole(winnerRole);
     });
 

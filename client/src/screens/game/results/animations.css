@@ -1,0 +1,31 @@
+.animate-card {
+  opacity: 0;
+  animation: card 0.3s ease-in 0s forwards;
+}
+
+@keyframes card {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-5deg);
+  }
+}
+
+.animate-tag {
+  opacity: 0;
+  animation: tag 1s ease-in 1s forwards;
+}
+
+@keyframes tag {
+  0% {
+    opacity: 0;
+    transform: scale(5) rotate(20deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(10deg);
+  }
+}

@@ -64,7 +64,7 @@ export default function WordChoosingScreen({ state }: { state: RoomName }) {
         <Clock />
       </header>
 
-      <hr className="border-white/50 my-4" />
+      <hr className="border-white/50 mb-4" />
 
       <div className="flex flex-col gap-6 overflow-y-auto mb-56">
         {players.map((player) => (

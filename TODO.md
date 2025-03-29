@@ -18,8 +18,8 @@
 - [ ] Debate page design
 - [ ] Debate implementation
 
-- [ ] Voting page design
-- [ ] Voting implementation
+- [x] Voting page design
+- [x] Voting implementation
 
 - [ ] End page design
 - [ ] End page implementation
@@ -33,3 +33,11 @@
 - [ ] Implement member listing (on join)
 - [ ] Add join/leave broadcast
 - [ ] Add chat features
+
+## Priority
+
+- !!Eliminated player screen
+- !Socket reconnection
+- Random Avatar generator
+
+- Reveal role on death (settings)

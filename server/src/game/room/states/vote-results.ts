@@ -32,7 +32,9 @@ export class VoteResultsState extends BaseState {
 
   public onTransition = () => {
     this.resultsEndTimeout = setTimeout(() => {
-      const players = Player.getMultiple(Array.from(this.context.getPlayers()));
+      const players = Player.getMultiple(Array.from(this.context.getPlayers())).filter((player) =>
+        player.getAliveStatus(),
+      );
 
       // Check if no undercover players are alive
       if (players.filter((player) => player.getPlayerData().role !== Role.Civilian).length === 0) {
@@ -41,11 +43,8 @@ export class VoteResultsState extends BaseState {
         return;
       }
 
-      // Check if there are two players and one is undercover
-      if (
-        players.length <= 2 &&
-        players.filter((player) => player.getPlayerData().role !== Role.Civilian).length >= 1
-      ) {
+      // Check if there is no
+      if (players.filter((player) => player.getPlayerData().role === Role.Civilian).length <= 1) {
         this.context.setSharedData({ winner: Role.Agent });
         this.context.transitionTo(new PostResultsState());
         return;

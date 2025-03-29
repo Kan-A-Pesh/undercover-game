@@ -153,9 +153,9 @@ export default function LobbySettings({ hasHostPermission }: LobbySettingsProps)
                   type="number"
                   className="w-24 text-center"
                   value={settingsStore.settings.debateDuration}
-                  onChange={(e) => handleNumberInput(e, "debateDuration", 30, 300)}
+                  onChange={(e) => handleNumberInput(e, "debateDuration", 10, 300)}
                   disabled={!hasHostPermission}
-                  min={30}
+                  min={10}
                   max={300}
                 />
                 <Text className="w-10">sec</Text>

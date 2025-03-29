@@ -8,6 +8,7 @@ export class PostResultsState extends BaseState {
   public readonly name: RoomName = RoomName.PostResults;
 
   public onTransition = () => {
+    console.log("game:round:ended", this.context.getSharedData().winner);
     this.context.getRoom().getIo().emit("game:round:ended", this.context.getSharedData().winner);
 
     setTimeout(() => {

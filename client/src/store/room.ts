@@ -52,7 +52,6 @@ const useRoomStore = create<RoomStore>((set) => ({
 
   resetForNewGame: () =>
     set({
-      roomId: null,
       myWord: undefined,
       roomTimerEnd: -1,
       chosenWords: {},
