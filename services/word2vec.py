@@ -40,36 +40,36 @@ class Word2vec:
           print("Model already exists. Skipping download.")
 
       print("Loading Word2Vec model...")
-      
+
       start_time = time.time()
       self.model = KeyedVectors.load_word2vec_format('./model/googleNews.bin', binary=True)
       load_time = time.time() - start_time
-      
+
       print(f"Word2Vec model loaded in {load_time:.2f} seconds")
     except Exception as e:
       print(f"Error loading Word2Vec model: {e}")
 
 
-#!                                  _____  _____   ______    _____      _____ 
+#!                                  _____  _____   ______    _____      _____
 #!                              ___|\    \|\    \ |\     \  |\    \    /    /|
 #!                             /    /\    \\\    \| \     \ | \    \  /    / |
 #!                            |    |  |    |\|    \  \     ||  \____\/    /  /
-#!                            |    |__|    | |     \  |    | \ |    /    /  / 
+#!                            |    |__|    | |     \  |    | \ |    /    /  /
 #! Cursed random word: takes  |    .--.    | |      \ |    |  \|___/    /  /   word from word2vec model
-#!                            |    |  |    | |    |\ \|    |      /    /  /   
-#!                            |____|  |____| |____||\_____/|     /____/  /    
-#!                            |    |  |    | |    |/ \|   ||    |`    | /     
-#!                            |____|  |____| |____|   |___|/    |_____|/      
-#!                              \(      )/     \(       )/         )/         
-#!                               '      '       '       '          '          
-  def get_random_word(self):
+#!                            |    |  |    | |    |\ \|    |      /    /  /
+#!                            |____|  |____| |____||\_____/|     /____/  /
+#!                            |    |  |    | |    |/ \|   ||    |`    | /
+#!                            |____|  |____| |____|   |___|/    |_____|/
+#!                              \(      )/     \(       )/         )/
+#!                               '      '       '       '          '
+  def get_random_word(self, language: str):
     # Get a random word from the model's vocabulary
     # Check if wordList.txt exists
-    if os.path.exists('wordList.txt'):
+    if os.path.exists(f'word-lists/{language}.txt'):
       # Read words from the file
-      with open('wordList.txt', 'r') as file:
+      with open(f'word-lists/{language}.txt', 'r') as file:
         words = [line.strip() for line in file if line.strip()]
-      
+
       # If there are words in the file, choose a random one
       if words:
         random_word = random.choice(words)
@@ -79,7 +79,7 @@ class Word2vec:
     else:
       # Fallback to model vocabulary if file doesn't exist
       random_word = random.choice(self.model.index_to_key)
-    
+
     try:
       # Find the closest word by vector similarity
       closest_word = self.get_closest_word(random_word)
@@ -87,25 +87,25 @@ class Word2vec:
     except KeyError:
       # If there's an issue finding similar words, try another random word
       return self.get_random_word()
-  
-  def add_new_word(self, word):
+
+  def add_new_word(self, word, language):
     # Check if the file exists, if not create it
-    file_path = 'wordList.txt'
+    file_path = f'word-lists/{language}.txt'
     with open(file_path, 'a') as file:
       # Add new word with a line break
       file.write(f"{word}\n")
-  
+
   def get_closest_word(self, word):
     words = self.model.most_similar(word, topn=10)
-    
+
     closest_words = [word[0] for word in words]
     print(closest_words)
-    
+
     randomWord = random.choice(closest_words)
     retries = 0
     max_retries = 10
     while word.lower() in randomWord.lower() and retries < max_retries:
         randomWord = random.choice(closestwords)
         retries += 1
-    
+
     return randomWord
