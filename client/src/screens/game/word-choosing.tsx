@@ -15,10 +15,12 @@ import VoteModal from "@/components/layout/game/vote-modal";
 import { useEffect, useState } from "react";
 import Clock from "@/components/layout/game/clock";
 import { getEliminatedQuote } from "@/utils/quotes";
+import MrWhiteModal from "@/components/layout/game/mrwhite-modal";
 
 export default function WordChoosingScreen({ state }: { state: RoomName }) {
   const { myWord, chosenWords, choosingPlayerId } = useRoomStore();
   const [vote, setVote] = useState<string | null>(null);
+  const [hasGuessed, setHasGuessed] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [voteResults, setVoteResults] = useState<{ [key: string]: number }>({});
   const players = usePlayersStore((state) => state.players);
@@ -39,6 +41,13 @@ export default function WordChoosingScreen({ state }: { state: RoomName }) {
   const handleWordChosen = (word: string) => {
     socket.emit("game:word:choose", { word }, (response) => {
       if (!response.success) console.error(response.error);
+    });
+  };
+
+  const handleMrWhiteChosen = (word: string) => {
+    socket.emit("game:results:mr-white-guess", { word }, (response) => {
+      if (!response.success) console.error(response.error);
+      setHasGuessed(true);
     });
   };
 
@@ -142,6 +151,11 @@ export default function WordChoosingScreen({ state }: { state: RoomName }) {
       <DebateModal open={state === RoomName.Debate} />
 
       <VoteModal open={state === RoomName.Voting && !hasVoted} canConfirm={!!vote} onVoteSelected={handleConfirmVote} />
+
+      <MrWhiteModal
+        open={state === RoomName.VoteResults && currentlyEliminatedPlayerId === myId && !hasGuessed && myWord === null}
+        onWordChosen={handleMrWhiteChosen}
+      />
     </>
   );
 }
