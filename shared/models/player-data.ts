@@ -1,9 +1,8 @@
+import { Role } from "./role";
+
 type PlayerData = {
-  username: string;
-  avatar: string;
-  givenWord?: string;
   chosenWord?: string;
-  votedPlayer?: string;
+  role?: Role;
 };
 
 export default PlayerData;

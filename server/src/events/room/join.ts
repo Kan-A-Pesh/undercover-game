@@ -2,12 +2,11 @@ import jwt from "jsonwebtoken";
 
 import Player from "@/game/player";
 import { SocketType } from "#/socket";
-import { ClientToServerEventTypes as EventTypes } from "shared/events/types/client-to-server";
 import { success, failure } from "shared/response/constructors";
 import Room from "@/game/room";
 
 export default function join(socket: SocketType) {
-  socket.on(EventTypes.ROOM_JOIN, (PayloadJoinRoom, callback) => {
+  socket.on("room:join", (PayloadJoinRoom, callback) => {
     const { username, avatar, token, roomId } = PayloadJoinRoom;
 
     let player: Player | undefined;
@@ -56,12 +55,15 @@ export default function join(socket: SocketType) {
 
       const signedPlayerId = jwt.sign({ playerId: sendPlayerId }, process.env.JWT_SECRET!, { expiresIn: 60 * 60 });
 
+      checkRoom.broadcastPlayers();
+
       callback(
         success({
           signedPlayerId,
           playerData: player.getPlayerData(),
           gameSettings: player.getRoom()!.getCurrentRoomInfo(),
           roomId: checkRoom.getId(),
+          playerId: sendPlayerId,
         }),
       );
     } catch (error) {

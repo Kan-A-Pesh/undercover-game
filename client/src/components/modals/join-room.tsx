@@ -2,8 +2,9 @@ import { KeyboardEvent, useCallback, useState } from "react";
 import Button from "../ui/button";
 import { Modal } from "../ui/modal";
 import Text from "../ui/text";
+import Input from "../ui/input";
 
-const JOIN_CODE_PATTERN = "[A-Za-z0-9]{3}-[A-Za-z0-9]{3}";
+const JOIN_CODE_PATTERN = "[A-Za-z0-9]{6}";
 
 interface JoinRoomModalProps {
   isOpen: boolean;
@@ -57,15 +58,14 @@ export function JoinRoomModal({ isOpen, onClose, onJoin }: JoinRoomModalProps) {
         </Text>
 
         <form onSubmit={handleJoin} className="w-64">
-          <input
-            type="text"
+          <Input
             name="code"
-            placeholder="XXX-XXX"
+            placeholder="XXXXXX"
             pattern={JOIN_CODE_PATTERN}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full bg-transparent border border-white px-4 py-2 text-white font-body placeholder:text-white/50 focus:outline-none"
+            className="w-full"
             required
           />
           {error && (

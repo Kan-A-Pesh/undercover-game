@@ -1,26 +1,35 @@
-import { BaseState, SetupState } from "./room-state";
+import { BaseState } from "./room-state";
 import RoomSettings from "shared/models/room-settings";
+import { SetupState } from "./states/setup";
+import Room from "../room";
+import { SharedData } from "./shared-data";
+import Player from "../player";
+import { PlayerProfile } from "shared/models/player-profile";
 
 export default class RoomContext {
-  private state: BaseState;
+  private state: BaseState = new SetupState();
   private settings: RoomSettings;
   private players: Set<string>; // All playerIds
   private spectators: Set<string>;
+  private room: Room;
+  private sharedData: SharedData;
 
-  constructor() {
-    this.state = new SetupState();
+  constructor(room: Room) {
+    this.room = room;
     this.players = new Set<string>();
     this.spectators = new Set<string>();
     this.settings = {
       maxPlayer: 10,
       mrWhiteCount: 1,
       agentCount: 2,
-      wordAttribution: 60,
       wordChoosingDuration: 60,
       debateDuration: 60,
       votingDuration: 60,
       spectatorMode: false,
     };
+    // Setting the shared data here to avoid lint error
+    this.sharedData = this.resetSharedData();
+    this.transitionTo(new SetupState());
   }
 
   public getState(): BaseState {
@@ -29,6 +38,26 @@ export default class RoomContext {
 
   public getPlayers(): Set<string> {
     return this.players;
+  }
+
+  public getPlayerProfiles(): PlayerProfile[] {
+    return Array.from(this.players).map((player) => Player.get(player)!.getProfile());
+  }
+
+  public resetSharedData() {
+    this.sharedData = {
+      civilianWord: "",
+    };
+
+    return this.sharedData;
+  }
+
+  public setSharedData(sharedData: Partial<SharedData>) {
+    this.sharedData = { ...this.sharedData, ...sharedData };
+  }
+
+  public getSharedData(): SharedData {
+    return this.sharedData;
   }
 
   public addPlayer(player: string): boolean {
@@ -51,14 +80,23 @@ export default class RoomContext {
     return this.settings;
   }
 
-  public setSettings(playerId: string, settings: RoomSettings) {
-    if (!this.isHost(playerId)) return;
+  public getRoom() {
+    return this.room;
+  }
+
+  public setSettings(settings: RoomSettings) {
     this.settings = settings;
+  }
+
+  public getSettings(): RoomSettings {
+    return this.settings;
   }
 
   public transitionTo(state: BaseState) {
     this.state = state;
     state.setContext(this);
+    this.room.getIo().emit("game:state:updated", state.name, state.getStateDuration());
+    state.onTransition();
   }
 
   public isHost(playerId: string): boolean {

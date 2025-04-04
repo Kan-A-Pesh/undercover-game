@@ -27,7 +27,6 @@ io.on("connection", async (socket) => {
         // Call the default export function with the socket
         if (typeof eventModule.default === "function") {
           eventModule.default(socket);
-          console.log(`Registered event handler from ${file}`);
         } else {
           console.warn(`Event file ${file} does not export a default function`);
         }

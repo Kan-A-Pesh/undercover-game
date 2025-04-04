@@ -9,4 +9,5 @@ export type JoinResponseCallback = {
   playerData: PlayerData;
   roomId: string;
   gameSettings: RoomSettings;
+  playerId: string;
 };
